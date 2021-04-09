@@ -89,10 +89,8 @@ public class BoardDto {
         @NotNull
         private Long id;
 
-        @NotNull
         private BoardType boardType;
 
-        @NotNull
         private ContentType contentType;
 
         private String title;

@@ -1,0 +1,70 @@
+### 게시판 추가
+POST {{host}}/board
+Content-Type: application/json
+
+{
+  "boardType": "ALL",
+  "contentType": "GENERAL",
+  "title": "Where can I get some?",
+  "content": "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc."
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+  client.global.set("boardId", response.body.id);
+});
+%}
+
+### 게시판 수정
+PUT {{host}}/board
+Content-Type: application/json
+
+{
+  "id": "{{boardId}}",
+  "boardType": "FREE_CONTENTS",
+  "contentType": "NOTICE",
+  "title": "Why do we use it?",
+  "content": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
+
+### 게시판 삭제
+DELETE {{host}}/board
+Content-Type: application/json
+
+{
+  "id": "{{boardId}}"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
+
+### 게시판 목록 조회
+GET {{host}}/board/boardType/ALL
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+  client.log(response.body.data.contractHId);
+  client.assert(response.body.data.contractHId == 6929137)
+  client.assert(response.body.data.telNumber == "02-6953-4223")
+});
+%}
+
+### 게시판 상세 조회
+GET {{host}}/board/{{boardId}}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}

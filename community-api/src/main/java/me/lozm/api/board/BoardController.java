@@ -35,20 +35,20 @@ public class BoardController {
 
     @ApiOperation(value = "게시판 추가")
     @PostMapping
-    public void addBoard(@RequestBody @Valid BoardDto.AddRequest requestDto) {
-        boardService.addBoard(requestDto);
+    public BoardDto.ResponseOne addBoard(@RequestBody @Valid BoardDto.AddRequest requestDto) {
+        return BoardDto.ResponseOne.from(boardService.addBoard(requestDto));
     }
 
     @ApiOperation(value = "게시판 수정")
     @PutMapping
-    public void editBoard(@RequestBody @Valid BoardDto.EditRequest requestDto) {
-        boardService.editBoard(requestDto);
+    public BoardDto.ResponseOne editBoard(@RequestBody @Valid BoardDto.EditRequest requestDto) {
+        return BoardDto.ResponseOne.from(boardService.editBoard(requestDto));
     }
 
     @ApiOperation(value = "게시판 삭제")
     @DeleteMapping
-    public void removeBoard(@RequestBody @Valid BoardDto.RemoveRequest requestDto) {
-        boardService.removeBoard(requestDto);
+    public BoardDto.ResponseOne removeBoard(@RequestBody @Valid BoardDto.RemoveRequest requestDto) {
+        return BoardDto.ResponseOne.from(boardService.removeBoard(requestDto));
     }
 
 }

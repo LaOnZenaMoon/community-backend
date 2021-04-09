@@ -5,7 +5,6 @@ import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.repository.BoardRepository;
 import me.lozm.domain.board.repository.BoardRepositorySupport;
-import me.lozm.domain.board.repository.CommentRepository;
 import me.lozm.domain.board.service.BoardHelperService;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.UseYn;
@@ -38,8 +37,8 @@ public class BoardService {
     }
 
     @Transactional
-    public void addBoard(BoardDto.AddRequest requestDto) {
-        boardRepository.save(Board.builder()
+    public Board addBoard(BoardDto.AddRequest requestDto) {
+        return boardRepository.save(Board.builder()
                 .boardType(requestDto.getBoardType())
                 .contentType(requestDto.getContentType())
                 .title(requestDto.getTitle())
@@ -50,7 +49,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void editBoard(BoardDto.EditRequest requestDto) {
+    public Board editBoard(BoardDto.EditRequest requestDto) {
         Board board = boardHelperService.getBoard(requestDto.getId());
         board.edit(
                 requestDto.getBoardType(),
@@ -60,10 +59,12 @@ public class BoardService {
                 requestDto.getModifiedBy(),
                 UseYn.USE
         );
+
+        return board;
     }
 
     @Transactional
-    public void removeBoard(BoardDto.RemoveRequest requestDto) {
+    public Board removeBoard(BoardDto.RemoveRequest requestDto) {
         Board board = boardHelperService.getBoard(requestDto.getId());
         board.edit(
                 null,
@@ -73,6 +74,8 @@ public class BoardService {
                 requestDto.getModifiedBy(),
                 UseYn.NOT_USE
         );
+
+        return board;
     }
 
 }
