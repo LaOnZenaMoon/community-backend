@@ -1,0 +1,61 @@
+plugins {
+    id 'org.asciidoctor.convert' version '2.4.0'
+}
+
+ext {
+    set('snippetsDir', file("build/generated-snippets"))
+}
+
+dependencies {
+    implementation project(':core')
+    implementation 'mysql:mysql-connector-java'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.hateoas:spring-hateoas'
+
+    // Spring REST Docs
+    testImplementation('org.springframework.restdocs:spring-restdocs-mockmvc')
+
+    // BulkInsert Test data
+    testImplementation 'com.github.javafaker:javafaker:0.12'
+}
+
+
+// asciidoctor - start
+asciidoctor {
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from ("${asciidoctor.outputDir}/html5") {
+        into "BOOT-INF/classes/static/docs"
+    }
+}
+
+asciidoctor.doFirst {
+    println "===== start asciidoctor"
+    delete file('src/main/resources/static/docs')
+}
+
+asciidoctor.doLast {
+    println "===== finish asciidoctor"
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+    from file("build/asciidoc/html5")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
+}
+
+test {
+    useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+// asciidoctor - end
