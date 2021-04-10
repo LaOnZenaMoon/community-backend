@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.dto.BoardDto;
+import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
 import me.lozm.global.code.converter.UseYnConverter;

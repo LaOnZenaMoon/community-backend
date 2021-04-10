@@ -1,0 +1,56 @@
+### 게시판 목록 조회
+GET {{host}}/board/boardType/ALL
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+  client.global.set("boardId", response.body.boardList[0].id);
+});
+%}
+
+### 게시판 댓글 추가
+POST {{host}}/comment
+Content-Type: application/json
+
+{
+  "boardId": "{{boardId}}",
+  "commentType": "GENERAL",
+  "content": "The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham."
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+  client.global.set("commentId", response.body.id);
+});
+%}
+
+### 게시판 댓글 수정
+PUT {{host}}/comment
+Content-Type: application/json
+
+{
+  "id": "{{commentId}}",
+  "commentType": "NOTICE",
+  "content": "Where does it come from?"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
+
+### 게시판 댓글 삭제
+DELETE {{host}}/comment
+Content-Type: application/json
+
+{
+  "id": "{{commentId}}"
+}
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}

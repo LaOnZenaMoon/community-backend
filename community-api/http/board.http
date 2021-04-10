@@ -54,9 +54,6 @@ GET {{host}}/board/boardType/ALL
 > {%
 client.test("Request executed successfully", function() {
   client.assert(response.status == 200, "Response status is not 200");
-  client.log(response.body.data.contractHId);
-  client.assert(response.body.data.contractHId == 6929137)
-  client.assert(response.body.data.telNumber == "02-6953-4223")
 });
 %}
 

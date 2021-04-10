@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import me.lozm.global.code.CommentType;
+import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.CommentTypeConverter;
 import me.lozm.global.common.BaseEntity;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 
@@ -36,5 +39,13 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID")
     private Board board;
+
+
+    public void edit(CommentType commentType, String content, Long modifiedBy, UseYn useYn) {
+        this.commentType = ObjectUtils.isEmpty(commentType) ? this.commentType : commentType;
+        this.content = StringUtils.isEmpty(content) ? this.content : content;
+        setModifiedBy(org.apache.commons.lang3.ObjectUtils.isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
+        setUse(org.apache.commons.lang3.ObjectUtils.isEmpty(useYn) ? getUse() : useYn);
+    }
 
 }

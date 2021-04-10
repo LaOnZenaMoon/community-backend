@@ -27,6 +27,7 @@ public class BoardService {
 
 
     public Page<Board> getBoardList(BoardType boardType, Pageable pageable) {
+
         List<Board> boardList = boardRepositorySupport.getBoardListByBoardType(boardType, pageable);
         long totalCount = boardRepositorySupport.getBoardTotalCountByBoardType(boardType);
         return new PageImpl<>(boardList, pageable, totalCount);
@@ -38,6 +39,7 @@ public class BoardService {
 
     @Transactional
     public Board addBoard(BoardDto.AddRequest requestDto) {
+
         return boardRepository.save(Board.builder()
                 .boardType(requestDto.getBoardType())
                 .contentType(requestDto.getContentType())
@@ -50,31 +52,17 @@ public class BoardService {
 
     @Transactional
     public Board editBoard(BoardDto.EditRequest requestDto) {
-        Board board = boardHelperService.getBoard(requestDto.getId());
-        board.edit(
-                requestDto.getBoardType(),
-                requestDto.getContentType(),
-                requestDto.getTitle(),
-                requestDto.getContent(),
-                requestDto.getModifiedBy(),
-                UseYn.USE
-        );
 
+        Board board = boardHelperService.getBoard(requestDto.getId());
+        board.edit(requestDto.getBoardType(), requestDto.getContentType(), requestDto.getTitle(), requestDto.getContent(), requestDto.getModifiedBy(), UseYn.USE);
         return board;
     }
 
     @Transactional
     public Board removeBoard(BoardDto.RemoveRequest requestDto) {
-        Board board = boardHelperService.getBoard(requestDto.getId());
-        board.edit(
-                null,
-                null,
-                null,
-                null,
-                requestDto.getModifiedBy(),
-                UseYn.NOT_USE
-        );
 
+        Board board = boardHelperService.getBoard(requestDto.getId());
+        board.edit(null, null, null, null, requestDto.getModifiedBy(), UseYn.NOT_USE);
         return board;
     }
 
