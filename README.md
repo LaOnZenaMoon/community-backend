@@ -8,3 +8,11 @@ http://{{host}}:8880/swagger-ui.html
 
 ## core
 * common entity and utils
+
+## skills
+* Java 1.8
+* Spring Boot
+* Spring DATA JPA
+* Querydsl
+* Swagger
+* Junit5
