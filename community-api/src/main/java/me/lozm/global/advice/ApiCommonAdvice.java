@@ -21,11 +21,11 @@ public class ApiCommonAdvice {
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler({NumberFormatException.class})
-    public String handleValidException(RuntimeException e) {
+    @ExceptionHandler({RuntimeException.class})
+    public String handleRuntimeException(RuntimeException e) {
         log.error(e.getMessage());
         e.printStackTrace();
-        return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
+        return e.getMessage();
     }
 
 }
