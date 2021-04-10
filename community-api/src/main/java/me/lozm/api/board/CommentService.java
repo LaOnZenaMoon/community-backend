@@ -44,6 +44,8 @@ public class CommentService {
                 .commentType(requestDto.getCommentType())
                 .content(requestDto.getContent())
                 .board(board)
+                .createdBy(requestDto.getCreatedBy())
+                .use(UseYn.USE)
                 .build());
     }
 

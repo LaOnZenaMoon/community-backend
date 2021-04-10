@@ -2,6 +2,7 @@ package me.lozm.domain.board.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
@@ -35,6 +36,7 @@ public class BoardDto {
         }
     }
 
+    @Getter
     public static class ResponseList {
         Page<ResponseListInfo> boardList;
 
@@ -99,7 +101,7 @@ public class BoardDto {
     }
 
     @Getter
-    @Builder
+    @NoArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
         private Long id;

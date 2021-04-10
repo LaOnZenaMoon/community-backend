@@ -2,17 +2,13 @@ package me.lozm.domain.board.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import me.lozm.domain.board.entity.Board;
+import lombok.NoArgsConstructor;
 import me.lozm.domain.board.entity.Comment;
-import me.lozm.global.code.BoardType;
 import me.lozm.global.code.CommentType;
-import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
-import me.lozm.global.code.converter.CommentTypeConverter;
 import me.lozm.global.common.BaseUserDto;
 import org.springframework.data.domain.Page;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -36,6 +32,7 @@ public class CommentDto {
         }
     }
 
+    @Getter
     public static class ResponseList {
         Page<CommentDto.ResponseListInfo> commentList;
 
@@ -89,7 +86,7 @@ public class CommentDto {
     }
 
     @Getter
-    @Builder
+    @NoArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
         private Long id;
