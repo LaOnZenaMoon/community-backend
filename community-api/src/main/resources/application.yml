@@ -12,5 +12,3 @@ logging:
   level:
     root: info
     me.lozm: debug
-    org.springframework.web.filter.CommonsRequestLoggingFilter: debug
-    org.hibernate.SQL: debug

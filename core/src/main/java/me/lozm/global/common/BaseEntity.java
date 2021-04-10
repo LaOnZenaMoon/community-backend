@@ -18,8 +18,8 @@ import java.time.LocalDateTime;
 
 @Getter
 @SuperBuilder
-@NoArgsConstructor
 @MappedSuperclass
+@NoArgsConstructor
 public abstract class BaseEntity {
 
     @Column(name = "CREATED_DATETIME", updatable = false)
@@ -42,3 +42,4 @@ public abstract class BaseEntity {
     private UseYn use = UseYn.USE;
 
 }
+

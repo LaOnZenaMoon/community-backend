@@ -1,4 +1,4 @@
-package me.lozm.api.board;
+package me.lozm.api.board.service;
 
 import lombok.RequiredArgsConstructor;
 import me.lozm.domain.board.dto.BoardDto;

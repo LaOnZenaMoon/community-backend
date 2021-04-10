@@ -14,7 +14,6 @@ dependencies {
 // QueryDSL - start
 apply plugin: "com.ewerk.gradle.plugins.querydsl"
 def querydslDir = "$buildDir/generated/querydsl"
-//    def querydslDir = "src/main/generated"
 
 querydsl {
     library = "com.querydsl:querydsl-apt"
