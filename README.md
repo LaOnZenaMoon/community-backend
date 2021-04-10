@@ -3,8 +3,7 @@
 * Will be used with other projects[community-frontend, authentication-backend, spring-cloud-infra]
 
 ## community-api
-* REST API Documentation
-http://{{host}}:8880/swagger-ui.html
+* REST API Documentation(http://{{host}}:8880/swagger-ui.html)
 
 ## core
 * common entities and utils
