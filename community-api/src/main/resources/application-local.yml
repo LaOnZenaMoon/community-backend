@@ -4,7 +4,7 @@ spring:
       enabled: true
   datasource:
     driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;INIT=CREATE SCHEMA IF NOT EXISTS LOZM
     username: laonzenamoon
     password: laonzenamoon
     testQuery: "SELECT 1"
@@ -12,7 +12,7 @@ spring:
       maximum-pool-size: 5
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 500
