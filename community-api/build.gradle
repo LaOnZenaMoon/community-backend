@@ -9,6 +9,14 @@ dependencies {
     implementation 'io.springfox:springfox-swagger2:2.9.2'
     implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 
+    // Eureka
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    // Runtime H2
+    implementation 'com.h2database:h2'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     // BulkInsert Test data
     testImplementation 'com.github.javafaker:javafaker:0.12'
 }
