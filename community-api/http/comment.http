@@ -42,12 +42,9 @@ client.test("Request executed successfully", function() {
 %}
 
 ### 게시판 댓글 삭제
-DELETE {{host}}/comment
+DELETE {{host}}/comment/{{commentId}}
 Content-Type: application/json
 
-{
-  "id": "{{commentId}}"
-}
 
 > {%
 client.test("Request executed successfully", function() {

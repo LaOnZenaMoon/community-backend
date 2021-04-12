@@ -35,12 +35,8 @@ client.test("Request executed successfully", function() {
 %}
 
 ### 게시판 삭제
-DELETE {{host}}/board
+DELETE {{host}}/board/{{boardId}}
 Content-Type: application/json
-
-{
-  "id": "{{boardId}}"
-}
 
 > {%
 client.test("Request executed successfully", function() {

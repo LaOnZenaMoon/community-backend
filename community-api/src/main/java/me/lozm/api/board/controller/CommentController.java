@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Api(tags = {"게시판 댓글"})
+@CrossOrigin
 @RequestMapping("comment")
 @RestController
 @RequiredArgsConstructor
@@ -21,7 +22,7 @@ public class CommentController {
 
     @ApiOperation("게시판 댓글 목록 조회")
     @GetMapping("board/{boardId}")
-    public CommentDto.ResponseList getCommentList(@PathVariable(value = "boardId") Long boardId, Pageable pageable) {
+    public CommentDto.ResponseList getCommentList(@PathVariable("boardId") Long boardId, Pageable pageable) {
 
         return CommentDto.ResponseList.createCommentList(commentService.getCommentList(boardId, pageable));
     }
@@ -41,10 +42,10 @@ public class CommentController {
     }
 
     @ApiOperation("게시판 댓글 삭제")
-    @DeleteMapping
-    public CommentDto.ResponseOne removeComment(@RequestBody @Valid CommentDto.RemoveRequest requestDto) {
+    @DeleteMapping("{commentId}")
+    public CommentDto.ResponseOne removeComment(@PathVariable("commentId") Long commentId) {
 
-        return CommentDto.ResponseOne.from(commentService.removeComment(requestDto));
+        return CommentDto.ResponseOne.from(commentService.removeComment(commentId));
     }
 
 }

@@ -59,10 +59,10 @@ public class BoardService {
     }
 
     @Transactional
-    public Board removeBoard(BoardDto.RemoveRequest requestDto) {
+    public Board removeBoard(Long boardId) {
 
-        Board board = boardHelperService.getBoard(requestDto.getId());
-        board.edit(null, null, null, null, requestDto.getModifiedBy(), UseYn.NOT_USE);
+        Board board = boardHelperService.getBoard(boardId);
+        board.edit(null, null, null, null, null, UseYn.NOT_USE);
         return board;
     }
 

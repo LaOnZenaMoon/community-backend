@@ -58,10 +58,10 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment removeComment(CommentDto.RemoveRequest requestDto) {
+    public Comment removeComment(Long commentId) {
 
-        Comment comment = commentHelperService.getComment(requestDto.getId());
-        comment.edit(null, null, requestDto.getModifiedBy(), UseYn.NOT_USE);
+        Comment comment = commentHelperService.getComment(commentId);
+        comment.edit(null, null, null, UseYn.NOT_USE);
         return comment;
     }
 }
