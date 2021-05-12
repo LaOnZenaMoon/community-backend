@@ -34,7 +34,9 @@ public class BoardService {
     }
 
     public Board getBoardDetail(Long boardId) {
-        return boardHelperService.getBoard(boardId);
+        Board board = boardHelperService.getBoard(boardId);
+        board.addViewCount();
+        return board;
     }
 
     @Transactional

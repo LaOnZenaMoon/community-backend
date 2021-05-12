@@ -40,6 +40,9 @@ public class Board extends BaseEntity {
     @Convert(converter = ContentTypeConverter.class)
     private ContentType contentType;
 
+    @Column(name = "VIEW_COUNT")
+    private Long viewCount;
+
     @Column(name = "TITLE")
     private String title;
 
@@ -55,6 +58,7 @@ public class Board extends BaseEntity {
         return Board.builder()
                 .boardType(requestDto.getBoardType())
                 .contentType(requestDto.getContentType())
+                .viewCount(0L)
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .createdBy(requestDto.getCreatedBy())
@@ -69,6 +73,10 @@ public class Board extends BaseEntity {
         this.content = StringUtils.isEmpty(content) ? this.content : content;
         setModifiedBy(ObjectUtils.isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
         setUse(ObjectUtils.isEmpty(useYn) ? getUse() : useYn);
+    }
+
+    public void addViewCount() {
+        this.viewCount += 1;
     }
 
 }
