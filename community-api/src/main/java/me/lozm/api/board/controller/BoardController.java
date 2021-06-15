@@ -6,10 +6,13 @@ import lombok.RequiredArgsConstructor;
 import me.lozm.api.board.service.BoardService;
 import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.global.code.BoardType;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static java.lang.String.format;
+import static me.lozm.global.config.CommonConfig.MAX_PAGE_SIZE;
 
 @Api(tags = {"게시판"})
 @CrossOrigin
@@ -23,9 +26,15 @@ public class BoardController {
 
     @ApiOperation("게시판 목록 조회")
     @GetMapping("boardType/{boardType}")
-    public BoardDto.ResponseList getBoardList(@PathVariable("boardType") BoardType boardType, Pageable pageable) {
+    public BoardDto.ResponseList getBoardList(@PathVariable("boardType") BoardType boardType,
+                                              @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+                                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
 
-        return BoardDto.ResponseList.createBoardList(boardService.getBoardList(boardType, pageable));
+        if (pageSize > MAX_PAGE_SIZE) {
+            throw new IllegalArgumentException(format("페이지 크기는 %d 을 초과할 수 없습니다.", MAX_PAGE_SIZE));
+        }
+
+        return BoardDto.ResponseList.createBoardList(boardService.getBoardList(boardType, PageRequest.of(pageNumber, pageSize)));
     }
 
     @ApiOperation("게시판 상세 조회")
@@ -35,11 +44,16 @@ public class BoardController {
         return BoardDto.ResponseOne.from(boardService.getBoardDetail(boardId));
     }
 
-    @ApiOperation("게시판 추가")
+    @ApiOperation("신규 게시판 추가")
     @PostMapping
     public BoardDto.ResponseOne addBoard(@RequestBody @Valid BoardDto.AddRequest requestDto) {
-
         return BoardDto.ResponseOne.from(boardService.addBoard(requestDto));
+    }
+
+    @ApiOperation("게시판 답글 추가")
+    @PostMapping("reply")
+    public BoardDto.ResponseOne addReplyBoard(@RequestBody @Valid BoardDto.AddReplyRequest requestDto) {
+        return BoardDto.ResponseOne.from(boardService.addReplyBoard(requestDto));
     }
 
     @ApiOperation("게시판 수정")

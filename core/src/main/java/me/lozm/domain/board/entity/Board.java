@@ -1,22 +1,19 @@
 package me.lozm.domain.board.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
-import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.BoardTypeConverter;
 import me.lozm.global.code.converter.ContentTypeConverter;
 import me.lozm.global.common.BaseEntity;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
 import java.util.List;
+
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 @Table(schema = "LOZM", name = "BOARD")
 @Entity
@@ -31,6 +28,19 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOARD_SEQ_GEN")
     @Column(name = "BOARD_ID")
     private Long id;
+
+    @Column(name = "COMMON_PARENT_BOARD_ID")
+    private Long commonParentId;
+
+    @Column(name = "PARENT_BOARD_ID")
+    private Long parentId;
+
+    @Setter
+    @Column(name = "GROUP_ORDER")
+    private Integer groupOrder;
+
+    @Column(name = "GROUP_LAYER")
+    private Integer groupLayer;
 
     @Column(name = "BOARD_TYPE")
     @Convert(converter = BoardTypeConverter.class)
@@ -54,25 +64,23 @@ public class Board extends BaseEntity {
     private List<Comment> comments;
 
 
-    public Board add(BoardDto.AddRequest requestDto) {
-        return Board.builder()
-                .boardType(requestDto.getBoardType())
-                .contentType(requestDto.getContentType())
-                .viewCount(0L)
-                .title(requestDto.getTitle())
-                .content(requestDto.getContent())
-                .createdBy(requestDto.getCreatedBy())
-                .use(UseYn.USE)
-                .build();
-    }
-
     public void edit(BoardType boardType, ContentType contentType, String title, String content, Long modifiedBy, UseYn useYn) {
-        this.boardType = ObjectUtils.isEmpty(boardType) ? this.boardType : boardType;
-        this.contentType = ObjectUtils.isEmpty(contentType) ? this.contentType : contentType;
+        this.boardType = isEmpty(boardType) ? this.boardType : boardType;
+        this.contentType = isEmpty(contentType) ? this.contentType : contentType;
         this.title = StringUtils.isEmpty(title) ? this.title : title;
         this.content = StringUtils.isEmpty(content) ? this.content : content;
-        setModifiedBy(ObjectUtils.isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
-        setUse(ObjectUtils.isEmpty(useYn) ? getUse() : useYn);
+        setModifiedBy(isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
+        setUse(isEmpty(useYn) ? getUse() : useYn);
+    }
+
+    public void setDefaultParentId() {
+        this.commonParentId = this.id;
+        this.parentId = this.id;
+    }
+
+    public void setReplyInfo(Integer parentGroupOrder, Integer parentGroupLayer) {
+        this.groupOrder = parentGroupOrder + 1;
+        this.groupLayer = parentGroupLayer + 1;
     }
 
     public void addViewCount() {

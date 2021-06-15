@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
 import me.lozm.global.code.BoardType;
+import me.lozm.global.code.UseYn;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -22,36 +23,39 @@ public class BoardRepositorySupport {
     private final JPAQueryFactory jpaQueryFactory;
 
 
-    public List<Board> getBoardListByBoardType(BoardType boardType, Pageable pageable) {
+    public List<Board> getBoardList(BoardType boardType, Pageable pageable) {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
-                        .join(board.comments, comment).fetchJoin()
+//                .join(board.comments, comment).fetchJoin()
                 .where(
-                        checkBoardType(boardType)
+                        checkBoardType(boardType),
+                        board.use.eq(UseYn.USE)
                 )
-                .orderBy(board.id.desc())
+                .orderBy(board.commonParentId.desc(), board.groupOrder.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
     }
 
-    public long getBoardTotalCountByBoardType(BoardType boardType) {
+    public long getBoardTotalCount(BoardType boardType) {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
                 .where(
-                        checkBoardType(boardType)
+                        checkBoardType(boardType),
+                        board.use.eq(UseYn.USE)
                 )
                 .fetchCount();
     }
 
-    public List<Comment> getCommentListByBoardId(Long boardId, Pageable pageable) {
+    public List<Comment> getCommentList(Long boardId, Pageable pageable) {
         return jpaQueryFactory
                 .select(comment)
                 .from(comment)
                 .where(
-                        comment.board.id.eq(boardId)
+                        comment.board.id.eq(boardId),
+                        comment.use.eq(UseYn.USE)
                 )
                 .orderBy(comment.id.desc())
                 .offset(pageable.getOffset())
@@ -59,14 +63,27 @@ public class BoardRepositorySupport {
                 .fetch();
     }
 
-    public long getCommentTotalCountByBoardType(Long boardId) {
+    public long getCommentTotalCount(Long boardId) {
         return jpaQueryFactory
                 .select(comment)
                 .from(comment)
                 .where(
-                        comment.board.id.eq(boardId)
+                        comment.board.id.eq(boardId),
+                        comment.use.eq(UseYn.USE)
                 )
                 .fetchCount();
+    }
+
+    public List<Board> getBoardListByCommonParentId(Long commonParentId) {
+        return jpaQueryFactory
+                .select(board)
+                .from(board)
+                .where(
+                        board.commonParentId.eq(commonParentId),
+                        board.use.eq(UseYn.USE)
+                )
+                .orderBy(board.groupOrder.asc())
+                .fetch();
     }
 
 

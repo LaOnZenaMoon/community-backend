@@ -30,8 +30,8 @@ public class CommentService {
 
     public Page<Comment> getCommentList(Long boardId, Pageable pageable) {
 
-        List<Comment> commentList = boardRepositorySupport.getCommentListByBoardId(boardId, pageable);
-        long totalCount = boardRepositorySupport.getCommentTotalCountByBoardType(boardId);
+        List<Comment> commentList = boardRepositorySupport.getCommentList(boardId, pageable);
+        long totalCount = boardRepositorySupport.getCommentTotalCount(boardId);
         return new PageImpl<>(commentList, pageable, totalCount);
     }
 
