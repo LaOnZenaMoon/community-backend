@@ -35,3 +35,8 @@ eureka:
     enabled: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true

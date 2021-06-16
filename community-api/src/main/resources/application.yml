@@ -33,3 +33,9 @@ ribbon:
 eureka:
   client:
     enabled: false
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: false
+      log-format: '#%(connectionId) | %(executionTime)ms | %(category) | %(sql)'

@@ -26,7 +26,7 @@ public class ApiCommonAdvice {
     public String handleIllegalArgumentException(IllegalArgumentException e) {
         log.error(e.getMessage());
         e.printStackTrace();
-        return HttpStatus.BAD_REQUEST.getReasonPhrase();
+        return e.getMessage();
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

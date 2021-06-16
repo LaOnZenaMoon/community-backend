@@ -32,7 +32,7 @@ public class BoardRepositorySupport {
                         checkBoardType(boardType),
                         board.use.eq(UseYn.USE)
                 )
-                .orderBy(board.commonParentId.desc(), board.groupOrder.asc())
+                .orderBy(board.hierarchicalBoard.commonParentId.desc(), board.hierarchicalBoard.groupOrder.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -79,10 +79,10 @@ public class BoardRepositorySupport {
                 .select(board)
                 .from(board)
                 .where(
-                        board.commonParentId.eq(commonParentId),
+                        board.hierarchicalBoard.commonParentId.eq(commonParentId),
                         board.use.eq(UseYn.USE)
                 )
-                .orderBy(board.groupOrder.asc())
+                .orderBy(board.hierarchicalBoard.groupOrder.asc())
                 .fetch();
     }
 

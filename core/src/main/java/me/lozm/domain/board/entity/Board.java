@@ -1,6 +1,9 @@
 package me.lozm.domain.board.entity;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
@@ -29,18 +32,12 @@ public class Board extends BaseEntity {
     @Column(name = "BOARD_ID")
     private Long id;
 
-    @Column(name = "COMMON_PARENT_BOARD_ID")
-    private Long commonParentId;
-
-    @Column(name = "PARENT_BOARD_ID")
-    private Long parentId;
-
-    @Setter
-    @Column(name = "GROUP_ORDER")
-    private Integer groupOrder;
-
-    @Column(name = "GROUP_LAYER")
-    private Integer groupLayer;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "commonParentId", column = @Column(name = "COMMON_PARENT_BOARD_ID")),
+            @AttributeOverride(name = "parentId", column = @Column(name = "PARENT_BOARD_ID"))
+    })
+    private HierarchicalEntity hierarchicalBoard;
 
     @Column(name = "BOARD_TYPE")
     @Convert(converter = BoardTypeConverter.class)
@@ -73,14 +70,9 @@ public class Board extends BaseEntity {
         setUse(isEmpty(useYn) ? getUse() : useYn);
     }
 
-    public void setDefaultParentId() {
-        this.commonParentId = this.id;
-        this.parentId = this.id;
-    }
-
-    public void setReplyInfo(Integer parentGroupOrder, Integer parentGroupLayer) {
-        this.groupOrder = parentGroupOrder + 1;
-        this.groupLayer = parentGroupLayer + 1;
+    public void remove(Long modifiedBy, UseYn useYn) {
+        setModifiedBy(isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
+        setUse(isEmpty(useYn) ? getUse() : useYn);
     }
 
     public void addViewCount() {

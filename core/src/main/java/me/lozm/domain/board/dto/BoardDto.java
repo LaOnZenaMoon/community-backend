@@ -1,11 +1,10 @@
 package me.lozm.domain.board.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.entity.Board;
+import me.lozm.domain.board.entity.HierarchicalEntity;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
@@ -13,10 +12,7 @@ import me.lozm.global.common.BaseUserDto;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
-
-import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
 public class BoardDto {
 
@@ -91,8 +87,7 @@ public class BoardDto {
 
         public static Board createEntity(AddRequest requestDto) {
             return Board.builder()
-                    .groupOrder(0)
-                    .groupLayer(0)
+                    .hierarchicalBoard(HierarchicalEntity.createEntity())
                     .boardType(requestDto.getBoardType())
                     .contentType(requestDto.getContentType())
                     .viewCount(0L)
@@ -115,8 +110,7 @@ public class BoardDto {
 
         public static Board createEntity(AddReplyRequest requestDto) {
             return Board.builder()
-                    .commonParentId(requestDto.getCommonParentId())
-                    .parentId(requestDto.getParentId())
+                    .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.commonParentId, requestDto.getParentId()))
                     .boardType(requestDto.getBoardType())
                     .contentType(requestDto.getContentType())
                     .viewCount(0L)

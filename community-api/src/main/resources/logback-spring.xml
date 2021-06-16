@@ -10,20 +10,14 @@
     <springProperty scope="context" name="APPLICATION_NAME" source="spring.application.name" defaultValue="unknown-app"/>
     <springProperty scope="context" name="PROFILES" source="spring.profiles.active" defaultValue="unknown"/>
 
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <charset>${LOG_CHARSET}</charset>
-            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>
-
-    <springProfile name="local">
-        <root level="${LOG_LEVEL}">
+    <springProfile name="local, dev">
+        <include resource="logback/console-appender.xml"/>
+        <root>
             <appender-ref ref="CONSOLE"/>
         </root>
     </springProfile>
 
-    <springProfile name="dev, prod">
+    <springProfile name="prod">
         <include resource="logback/application-appender.xml"/>
         <include resource="logback/error-appender.xml"/>
         <root level="${LOG_LEVEL}">
