@@ -6,13 +6,10 @@ import lombok.RequiredArgsConstructor;
 import me.lozm.api.board.service.BoardService;
 import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.global.code.BoardType;
-import org.springframework.data.domain.PageRequest;
+import me.lozm.object.dto.PageDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import static java.lang.String.format;
-import static me.lozm.global.config.CommonConfig.MAX_PAGE_SIZE;
 
 @Api(tags = {"게시판"})
 @CrossOrigin
@@ -26,21 +23,13 @@ public class BoardController {
 
     @ApiOperation("게시판 목록 조회")
     @GetMapping("boardType/{boardType}")
-    public BoardDto.ResponseList getBoardList(@PathVariable("boardType") BoardType boardType,
-                                              @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
-                                              @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-
-        if (pageSize > MAX_PAGE_SIZE) {
-            throw new IllegalArgumentException(format("페이지 크기는 %d 을 초과할 수 없습니다.", MAX_PAGE_SIZE));
-        }
-
-        return BoardDto.ResponseList.createBoardList(boardService.getBoardList(boardType, PageRequest.of(pageNumber, pageSize)));
+    public BoardDto.ResponseList getBoardList(@PathVariable("boardType") BoardType boardType, PageDto pageDto) {
+        return BoardDto.ResponseList.createBoardList(boardService.getBoardList(boardType, pageDto.getPageRequest()));
     }
 
     @ApiOperation("게시판 상세 조회")
     @GetMapping("{boardId}")
     public BoardDto.ResponseOne getBoardDetail(@PathVariable("boardId") Long boardId) {
-
         return BoardDto.ResponseOne.from(boardService.getBoardDetail(boardId));
     }
 
@@ -59,14 +48,12 @@ public class BoardController {
     @ApiOperation("게시판 수정")
     @PutMapping
     public BoardDto.ResponseOne editBoard(@RequestBody @Valid BoardDto.EditRequest requestDto) {
-
         return BoardDto.ResponseOne.from(boardService.editBoard(requestDto));
     }
 
     @ApiOperation("게시판 삭제")
     @DeleteMapping("{boardId}")
     public BoardDto.ResponseOne removeBoard(@PathVariable("boardId") Long boardId) {
-
         return BoardDto.ResponseOne.from(boardService.removeBoard(boardId));
     }
 

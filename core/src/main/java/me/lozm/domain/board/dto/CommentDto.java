@@ -3,7 +3,9 @@ package me.lozm.domain.board.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
+import me.lozm.domain.board.entity.HierarchicalEntity;
 import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.common.BaseUserDto;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 public class CommentDto {
 
@@ -62,7 +65,6 @@ public class CommentDto {
     }
 
     @Getter
-    @Builder
     public static class AddRequest extends BaseUserDto {
         @NotNull
         private Long boardId;
@@ -72,6 +74,39 @@ public class CommentDto {
 
         @NotEmpty
         private String content;
+
+        public static Comment createEntity(AddRequest requestDto, Board board) {
+            return Comment.builder()
+                    .hierarchicalBoard(HierarchicalEntity.createEntity())
+                    .commentType(requestDto.getCommentType())
+                    .content(requestDto.getContent())
+                    .board(board)
+                    .createdBy(requestDto.getCreatedBy())
+                    .createdDateTime(LocalDateTime.now())
+                    .use(UseYn.USE)
+                    .build();
+        }
+    }
+
+    @Getter
+    public static class AddReplyRequest extends AddRequest {
+        @NotNull
+        private Long commonParentId;
+
+        @NotNull
+        private Long parentId;
+
+        public static Comment createEntity(AddReplyRequest requestDto, Board board) {
+            return Comment.builder()
+                    .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.getCommonParentId(), requestDto.getParentId()))
+                    .commentType(requestDto.getCommentType())
+                    .content(requestDto.getContent())
+                    .board(board)
+                    .createdBy(requestDto.getCreatedBy())
+                    .createdDateTime(LocalDateTime.now())
+                    .use(UseYn.USE)
+                    .build();
+        }
     }
 
     @Getter

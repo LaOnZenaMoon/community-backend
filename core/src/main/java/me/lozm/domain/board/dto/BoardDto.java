@@ -110,7 +110,7 @@ public class BoardDto {
 
         public static Board createEntity(AddReplyRequest requestDto) {
             return Board.builder()
-                    .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.commonParentId, requestDto.getParentId()))
+                    .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.getCommonParentId(), requestDto.getParentId()))
                     .boardType(requestDto.getBoardType())
                     .contentType(requestDto.getContentType())
                     .viewCount(0L)

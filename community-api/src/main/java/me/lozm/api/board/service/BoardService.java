@@ -43,9 +43,9 @@ public class BoardService {
     @Transactional
     public Board addBoard(BoardDto.AddRequest requestDto) {
         // Case1: 새로운 글 추가
-        Board savedEntity = boardRepository.save(BoardDto.AddRequest.createEntity(requestDto));
-        savedEntity.getHierarchicalBoard().setDefaultParentId(savedEntity.getId());
-        return savedEntity;
+        Board savedBoard = boardRepository.save(BoardDto.AddRequest.createEntity(requestDto));
+        savedBoard.getHierarchicalBoard().setDefaultParentId(savedBoard.getId());
+        return savedBoard;
     }
 
     @Transactional
@@ -58,17 +58,17 @@ public class BoardService {
             throw new IllegalArgumentException(format("존재하지 않는 게시글입니다. 게시판 ID: [%d]", commonParentId));
         }
 
-        final Board savedEntity = boardRepository.save(BoardDto.AddReplyRequest.createEntity(requestDto));
+        final Board savedBoard = boardRepository.save(BoardDto.AddReplyRequest.createEntity(requestDto));
 
         // Case2: 원글에 대한 답글
         final Board commonParentBoard = boardList.get(0);
         if (commonParentBoard.getId().equals(commonParentId) && commonParentBoard.getId().equals(parentId)) {
             updateOrders(boardList, 0);
-            savedEntity.getHierarchicalBoard().setReplyInfo(
+            savedBoard.getHierarchicalBoard().setReplyInfo(
                     commonParentBoard.getHierarchicalBoard().getGroupOrder(),
                     commonParentBoard.getHierarchicalBoard().getGroupLayer()
             );
-            return savedEntity;
+            return savedBoard;
         }
 
         // Case3: 답글에 대한 답글
@@ -85,17 +85,12 @@ public class BoardService {
         }
 
         updateOrders(boardList, repliedIndex);
-        savedEntity.getHierarchicalBoard().setReplyInfo(
+        savedBoard.getHierarchicalBoard().setReplyInfo(
                 boardList.get(repliedIndex).getHierarchicalBoard().getGroupOrder(),
                 boardList.get(repliedIndex).getHierarchicalBoard().getGroupLayer()
         );
-        return savedEntity;
-    }
 
-    private void updateOrders(List<Board> boardList, int startIndex) {
-        for (int i = startIndex + 1; i < boardList.size(); i++) {
-            boardList.get(i).getHierarchicalBoard().setGroupOrder(boardList.get(i).getHierarchicalBoard().getGroupOrder() + 1);
-        }
+        return savedBoard;
     }
 
     @Transactional
@@ -111,6 +106,13 @@ public class BoardService {
         //TODO 삭제 요청자 세팅
         board.remove(null, UseYn.NOT_USE);
         return board;
+    }
+
+
+    private void updateOrders(List<Board> boardList, int startIndex) {
+        for (int i = startIndex + 1; i < boardList.size(); i++) {
+            boardList.get(i).getHierarchicalBoard().setGroupOrder(boardList.get(i).getHierarchicalBoard().getGroupOrder() + 1);
+        }
     }
 
 }

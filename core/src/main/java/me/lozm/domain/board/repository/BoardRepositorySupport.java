@@ -27,7 +27,6 @@ public class BoardRepositorySupport {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
-//                .join(board.comments, comment).fetchJoin()
                 .where(
                         checkBoardType(boardType),
                         board.use.eq(UseYn.USE)
@@ -53,10 +52,7 @@ public class BoardRepositorySupport {
         return jpaQueryFactory
                 .select(comment)
                 .from(comment)
-                .where(
-                        comment.board.id.eq(boardId),
-                        comment.use.eq(UseYn.USE)
-                )
+                .where(comment.board.id.eq(boardId))
                 .orderBy(comment.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -83,6 +79,18 @@ public class BoardRepositorySupport {
                         board.use.eq(UseYn.USE)
                 )
                 .orderBy(board.hierarchicalBoard.groupOrder.asc())
+                .fetch();
+    }
+
+    public List<Comment> getCommentListByCommonParentId(Long commonParentId) {
+        return jpaQueryFactory
+                .select(comment)
+                .from(comment)
+                .where(
+                        comment.hierarchicalBoard.commonParentId.eq(commonParentId),
+                        comment.use.eq(UseYn.USE)
+                )
+                .orderBy(comment.hierarchicalBoard.groupOrder.asc())
                 .fetch();
     }
 

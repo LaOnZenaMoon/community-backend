@@ -1,6 +1,7 @@
 package me.lozm.api.board.service;
 
 import lombok.RequiredArgsConstructor;
+import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.domain.board.dto.CommentDto;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
@@ -17,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static java.lang.String.format;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -29,7 +32,6 @@ public class CommentService {
 
 
     public Page<Comment> getCommentList(Long boardId, Pageable pageable) {
-
         List<Comment> commentList = boardRepositorySupport.getCommentList(boardId, pageable);
         long totalCount = boardRepositorySupport.getCommentTotalCount(boardId);
         return new PageImpl<>(commentList, pageable, totalCount);
@@ -37,21 +39,61 @@ public class CommentService {
 
     @Transactional
     public Comment addComment(CommentDto.AddRequest requestDto) {
+        Board board = boardHelperService.getBoard(requestDto.getBoardId());
+        Comment savedComment = commentRepository.save(CommentDto.AddRequest.createEntity(requestDto, board));
+        savedComment.getHierarchicalBoard().setDefaultParentId(savedComment.getId());
+        return savedComment;
+    }
 
+    @Transactional
+    public Comment addRelyComment(CommentDto.AddReplyRequest requestDto) {
         Board board = boardHelperService.getBoard(requestDto.getBoardId());
 
-        return commentRepository.save(Comment.builder()
-                .commentType(requestDto.getCommentType())
-                .content(requestDto.getContent())
-                .board(board)
-                .createdBy(requestDto.getCreatedBy())
-                .use(UseYn.USE)
-                .build());
+        final Long commonParentId = requestDto.getCommonParentId();
+        final Long parentId = requestDto.getParentId();
+
+        List<Comment> commentList = boardRepositorySupport.getCommentListByCommonParentId(commonParentId);
+        if (commentList.size() == 0) {
+            throw new IllegalArgumentException(format("존재하지 않는 댓글입니다. 댓글 ID: [%d]", commonParentId));
+        }
+
+        final Comment savedComment = commentRepository.save(CommentDto.AddReplyRequest.createEntity(requestDto, board));
+
+        // Case2: 원글에 대한 답글
+        final Comment commonParentComment = commentList.get(0);
+        if (commonParentComment.getId().equals(commonParentId) && commonParentComment.getId().equals(parentId)) {
+            updateOrders(commentList, 0);
+            savedComment.getHierarchicalBoard().setReplyInfo(
+                    commonParentComment.getHierarchicalBoard().getGroupOrder(),
+                    commonParentComment.getHierarchicalBoard().getGroupLayer()
+            );
+            return savedComment;
+        }
+
+        // Case3: 답글에 대한 답글
+        int repliedIndex = -1;
+        for (int i = 0; i < commentList.size(); i++) {
+            if (commentList.get(i).getId().equals(parentId)) {
+                repliedIndex = i;
+                break;
+            }
+        }
+
+        if (repliedIndex == -1) {
+            throw new IllegalArgumentException(format("존재하지 않는 댓글입니다. 댓글 ID: [%d]", parentId));
+        }
+
+        updateOrders(commentList, repliedIndex);
+        savedComment.getHierarchicalBoard().setReplyInfo(
+                commentList.get(repliedIndex).getHierarchicalBoard().getGroupOrder(),
+                commentList.get(repliedIndex).getHierarchicalBoard().getGroupLayer()
+        );
+
+        return savedComment;
     }
 
     @Transactional
     public Comment editComment(CommentDto.EditRequest requestDto) {
-
         Comment comment = commentHelperService.getComment(requestDto.getId());
         comment.edit(requestDto.getCommentType(), requestDto.getContent(), requestDto.getModifiedBy(), UseYn.USE);
         return comment;
@@ -59,9 +101,17 @@ public class CommentService {
 
     @Transactional
     public Comment removeComment(Long commentId) {
-
         Comment comment = commentHelperService.getComment(commentId);
-        comment.edit(null, null, null, UseYn.NOT_USE);
+        //TODO 삭제 요청자 세팅
+        comment.remove(null, UseYn.NOT_USE);
         return comment;
     }
+
+
+    private void updateOrders(List<Comment> commentList, int startIndex) {
+        for (int i = startIndex + 1; i < commentList.size(); i++) {
+            commentList.get(i).getHierarchicalBoard().setGroupOrder(commentList.get(i).getHierarchicalBoard().getGroupOrder() + 1);
+        }
+    }
+
 }

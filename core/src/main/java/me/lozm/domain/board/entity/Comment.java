@@ -14,6 +14,8 @@ import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+
 @Table(schema = "LOZM", name = "COMMENTS")
 @Entity
 @Getter
@@ -27,6 +29,13 @@ public class Comment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COMMENT_SEQ_GEN")
     @Column(name = "COMMENT_ID")
     private Long id;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "commonParentId", column = @Column(name = "COMMON_PARENT_COMMENT_ID")),
+            @AttributeOverride(name = "parentId", column = @Column(name = "PARENT_COMMENT_ID"))
+    })
+    private HierarchicalEntity hierarchicalBoard;
 
     @Column(name = "COMMENT_TYPE")
     @Convert(converter = CommentTypeConverter.class)
@@ -46,6 +55,11 @@ public class Comment extends BaseEntity {
         this.content = StringUtils.isEmpty(content) ? this.content : content;
         setModifiedBy(org.apache.commons.lang3.ObjectUtils.isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
         setUse(org.apache.commons.lang3.ObjectUtils.isEmpty(useYn) ? getUse() : useYn);
+    }
+
+    public void remove(Long modifiedBy, UseYn useYn) {
+        setModifiedBy(isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
+        setUse(isEmpty(useYn) ? getUse() : useYn);
     }
 
 }
