@@ -53,7 +53,7 @@ public class BoardRepositorySupport {
                 .select(comment)
                 .from(comment)
                 .where(comment.board.id.eq(boardId))
-                .orderBy(comment.id.desc())
+                .orderBy(board.hierarchicalBoard.commonParentId.desc(), board.hierarchicalBoard.groupOrder.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

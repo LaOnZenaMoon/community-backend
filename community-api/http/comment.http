@@ -1,10 +1,10 @@
-### 게시판 목록 조회
-GET {{host}}/board/boardType/ALL
+### 게시판 댓글 목록 조회
+GET {{host}}/comment/board/1
 
 > {%
 client.test("Request executed successfully", function() {
   client.assert(response.status == 200, "Response status is not 200");
-  client.global.set("boardId", response.body.boardList[0].id);
+  client.global.set("boardId", response.body.commentList.content[0].id);
 });
 %}
 
