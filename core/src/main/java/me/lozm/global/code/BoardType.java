@@ -10,7 +10,9 @@ public enum BoardType {
     ALL("ALL", "전체"),
     NEWS("NEWS", "뉴스"),
     MAGAZINE("MAGAZINE", "잡지"),
-    FREE_CONTENTS("FREE_CONTENTS", "자유게시판");
+    FREE_CONTENTS("FREE_CONTENTS", "자유게시판"),
+    MULTIMEDIA("MULTIMEDIA", "멀티미디어"),
+    MARKET("MARKET", "마켓");
 
     private String code;
     private String description;

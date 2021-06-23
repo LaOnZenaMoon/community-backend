@@ -46,8 +46,8 @@ public class BoardController {
     }
 
     @ApiOperation("게시판 수정")
-    @PutMapping
-    public BoardDto.ResponseOne editBoard(@RequestBody @Valid BoardDto.EditRequest requestDto) {
+    @PutMapping("{boardId}")
+    public BoardDto.ResponseOne editBoard(@PathVariable("boardId") Long boardId, @RequestBody @Valid BoardDto.EditRequest requestDto) {
         return BoardDto.ResponseOne.from(boardService.editBoard(requestDto));
     }
 

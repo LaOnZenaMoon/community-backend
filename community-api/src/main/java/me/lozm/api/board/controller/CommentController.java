@@ -39,8 +39,8 @@ public class CommentController {
     }
 
     @ApiOperation("게시판 댓글 수정")
-    @PutMapping
-    public CommentDto.ResponseOne editComment(@RequestBody @Valid CommentDto.EditRequest requestDto) {
+    @PutMapping("{commentId}")
+    public CommentDto.ResponseOne editComment(@PathVariable("commentId") Long commentId, @RequestBody @Valid CommentDto.EditRequest requestDto) {
         return CommentDto.ResponseOne.from(commentService.editComment(requestDto));
     }
 
