@@ -19,9 +19,9 @@ spring:
           batch_size: 100
           order_inserts: true
 
-logging:
-  level:
-    root: debug
+#logging:
+#  level:
+#    root: debug
 
 decorator:
   datasource:

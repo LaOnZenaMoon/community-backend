@@ -1,8 +1,14 @@
 package me.lozm.global.common;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import me.lozm.global.code.UsersType;
 import org.springframework.util.ObjectUtils;
 
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class BaseUserDto {
 
     private Long createdBy;

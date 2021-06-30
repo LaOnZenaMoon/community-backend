@@ -40,3 +40,8 @@ decorator:
   datasource:
     p6spy:
       enable-logging: true
+
+lozm:
+  data:
+    enabled: false
+    size: 1000

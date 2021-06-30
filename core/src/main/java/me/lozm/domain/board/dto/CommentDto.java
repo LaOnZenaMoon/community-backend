@@ -1,8 +1,10 @@
 package me.lozm.domain.board.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
 import me.lozm.domain.board.entity.HierarchicalEntity;
@@ -65,6 +67,9 @@ public class CommentDto {
     }
 
     @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AddRequest extends BaseUserDto {
         @NotNull
         private Long boardId;
@@ -89,6 +94,9 @@ public class CommentDto {
     }
 
     @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AddReplyRequest extends AddRequest {
         @NotNull
         private Long commonParentId;
@@ -110,7 +118,9 @@ public class CommentDto {
     }
 
     @Getter
-    @Builder
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EditRequest extends BaseUserDto {
         @NotNull
         private Long id;
@@ -121,7 +131,9 @@ public class CommentDto {
     }
 
     @Getter
+    @SuperBuilder
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
         private Long id;

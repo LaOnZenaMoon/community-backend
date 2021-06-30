@@ -1,8 +1,10 @@
 package me.lozm.domain.board.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.HierarchicalEntity;
 import me.lozm.global.code.BoardType;
@@ -72,6 +74,9 @@ public class BoardDto {
     }
 
     @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AddRequest extends BaseUserDto {
         @NotNull
         private BoardType boardType;
@@ -101,6 +106,9 @@ public class BoardDto {
     }
 
     @Getter
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AddReplyRequest extends AddRequest {
         @NotNull
         private Long commonParentId;
@@ -124,7 +132,9 @@ public class BoardDto {
     }
 
     @Getter
-    @Builder
+    @SuperBuilder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class EditRequest extends BaseUserDto {
         @NotNull
         private Long id;
@@ -139,7 +149,9 @@ public class BoardDto {
     }
 
     @Getter
+    @SuperBuilder
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
         private Long id;

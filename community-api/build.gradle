@@ -17,6 +17,16 @@ dependencies {
     implementation 'com.h2database:h2'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // Initial data settings
+    implementation 'com.github.javafaker:javafaker:0.12'
+
+    // ehcache
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
+    implementation 'org.ehcache:ehcache'
+    implementation 'javax.cache:cache-api'
+
     // BulkInsert Test data
     testImplementation 'com.github.javafaker:javafaker:0.12'
 }
