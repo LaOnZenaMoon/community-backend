@@ -9,6 +9,7 @@ import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.CommentTypeConverter;
 import me.lozm.global.common.BaseEntity;
+import me.lozm.global.common.HierarchicalEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
 

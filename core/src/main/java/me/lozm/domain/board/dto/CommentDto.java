@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
-import me.lozm.domain.board.entity.HierarchicalEntity;
 import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.common.BaseUserDto;
+import me.lozm.global.common.HierarchicalEntity;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotEmpty;

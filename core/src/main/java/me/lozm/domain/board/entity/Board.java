@@ -10,6 +10,7 @@ import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.BoardTypeConverter;
 import me.lozm.global.code.converter.ContentTypeConverter;
+import me.lozm.global.common.HierarchicalEntity;
 import me.lozm.global.common.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 
