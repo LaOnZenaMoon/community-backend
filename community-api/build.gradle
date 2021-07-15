@@ -24,7 +24,8 @@ dependencies {
 
     // ehcache
     implementation 'org.springframework.boot:spring-boot-starter-cache'
-    implementation 'org.ehcache:ehcache'
+//    implementation 'org.ehcache:ehcache'
+    implementation 'net.sf.ehcache:ehcache'
     implementation 'javax.cache:cache-api'
 
     // BulkInsert Test data

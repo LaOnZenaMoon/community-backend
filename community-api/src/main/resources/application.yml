@@ -8,7 +8,7 @@ spring:
     active: local
   jpa:
     hibernate:
-      ddl-auto: none  #절대 값 변경 금지!!
+      ddl-auto: none
     properties:
       hibernate:
         default_batch_fetch_size: 1000
@@ -20,7 +20,7 @@ spring:
         order_updates: true
     open-in-view: false
   cache:
-    jcache:
+    ehcache:
       config: classpath:ehcache.xml
 
 logging:

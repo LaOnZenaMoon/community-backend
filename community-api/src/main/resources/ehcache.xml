@@ -1,14 +1,34 @@
-<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns='http://www.ehcache.org/v3'
-        xmlns:jsr107="http://www.ehcache.org/v3/jsr107"
-        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core.xsd http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd">
-  <service>
-    <jsr107:defaults enable-management="true" enable-statistics="true"/>
-  </service>
-  <cache-template name="defaultTemplate">
-    <expiry>
-      <ttl unit="seconds">600000</ttl>
-    </expiry>
-    <heap>20</heap>
-  </cache-template>
-  <cache alias="getDefaultCache" uses-template="defaultTemplate"></cache>
-</config>
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         maxBytesLocalHeap="300M"
+         updateCheck="false">
+
+  <diskStore path="java.io.tmpdir"/>
+
+  <sizeOfPolicy maxDepth="100000" maxDepthExceededBehavior="continue"/>
+
+  <defaultCache
+          eternal="false"
+          timeToIdleSeconds="0"
+          timeToLiveSeconds="1200"
+          overflowToDisk="false"
+          diskPersistent="false"
+          diskExpiryThreadIntervalSeconds="120"
+          memoryStoreEvictionPolicy="LRU"
+  >
+  </defaultCache>
+
+  <cache name="getDefaultCache"
+         eternal="false"
+         timeToIdleSeconds="0"
+         timeToLiveSeconds="1200"
+         overflowToDisk="false"
+         diskPersistent="false"
+         diskExpiryThreadIntervalSeconds="120"
+         memoryStoreEvictionPolicy="LRU"
+         logging="true"
+  >
+  </cache>
+
+</ehcache>
