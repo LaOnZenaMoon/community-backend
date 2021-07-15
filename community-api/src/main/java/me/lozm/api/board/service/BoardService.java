@@ -6,6 +6,7 @@ import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.repository.BoardRepository;
 import me.lozm.domain.board.repository.BoardRepositorySupport;
 import me.lozm.domain.board.service.BoardHelperService;
+import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.UseYn;
 import org.springframework.data.domain.Page;
@@ -28,8 +29,8 @@ public class BoardService {
     private final BoardRepositorySupport boardRepositorySupport;
 
 
-    public Page<Board> getBoardList(BoardType boardType, Pageable pageable) {
-        List<Board> boardList = boardRepositorySupport.getBoardList(boardType, pageable);
+    public Page<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable) {
+        final List<BoardVo.ListInfo> boardList = boardRepositorySupport.getBoardList(boardType, pageable);
         long totalCount = boardRepositorySupport.getBoardTotalCount(boardType);
         return new PageImpl<>(boardList, pageable, totalCount);
     }

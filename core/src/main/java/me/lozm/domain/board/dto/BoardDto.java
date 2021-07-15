@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.entity.Board;
+import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
@@ -27,15 +28,21 @@ public class BoardDto {
         private String title;
         private String content;
         private UseYn use;
+        private LocalDateTime createdDateTime;
+        private Long createdUserId;
+        private String createdUserIdentifier;
 
-        public static ResponseListInfo from(Board board) {
+        public static ResponseListInfo from(BoardVo.ListInfo boardInfo) {
             return ResponseListInfo.builder()
-                    .id(board.getId())
-                    .boardType(board.getBoardType())
-                    .contentType(board.getContentType())
-                    .title(board.getTitle())
-                    .content(board.getContent())
-                    .use(board.getUse())
+                    .id(boardInfo.getBoardId())
+                    .boardType(boardInfo.getBoardType())
+                    .contentType(boardInfo.getBoardContentType())
+                    .title(boardInfo.getBoardTitle())
+                    .content(boardInfo.getBoardContent())
+                    .use(boardInfo.getBoardUse())
+                    .createdDateTime(boardInfo.getBoardCreatedDateTime())
+                    .createdUserId(boardInfo.getUserId())
+                    .createdUserIdentifier(boardInfo.getUserIdentifier())
                     .build();
         }
     }
@@ -44,7 +51,7 @@ public class BoardDto {
     public static class ResponseList {
         Page<ResponseListInfo> boardList;
 
-        public static ResponseList createBoardList(Page<Board> boardList) {
+        public static ResponseList createBoardList(Page<BoardVo.ListInfo> boardList) {
             ResponseList list = new ResponseList();
             list.boardList = boardList.map(ResponseListInfo::from);
             return list;
