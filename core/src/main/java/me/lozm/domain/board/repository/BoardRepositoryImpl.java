@@ -23,11 +23,12 @@ import static me.lozm.domain.user.entity.QUser.user;
 
 @Repository
 @RequiredArgsConstructor
-public class BoardRepositorySupport {
+public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     private final JPAQueryFactory jpaQueryFactory;
 
 
+    @Override
     public List<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable) {
         return jpaQueryFactory
                 .select(Projections.fields(
@@ -55,6 +56,7 @@ public class BoardRepositorySupport {
                 .fetch();
     }
 
+    @Override
     public long getBoardTotalCount(BoardType boardType) {
         return jpaQueryFactory
                 .select(board)
@@ -66,28 +68,7 @@ public class BoardRepositorySupport {
                 .fetchCount();
     }
 
-    public List<Comment> getCommentList(Long boardId, Pageable pageable) {
-        return jpaQueryFactory
-                .select(comment)
-                .from(comment)
-                .where(comment.board.id.eq(boardId))
-                .orderBy(board.hierarchicalBoard.commonParentId.desc(), board.hierarchicalBoard.groupOrder.asc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-    }
-
-    public long getCommentTotalCount(Long boardId) {
-        return jpaQueryFactory
-                .select(comment)
-                .from(comment)
-                .where(
-                        comment.board.id.eq(boardId),
-                        comment.use.eq(UseYn.USE)
-                )
-                .fetchCount();
-    }
-
+    @Override
     public List<Board> getBoardListByCommonParentId(Long commonParentId) {
         return jpaQueryFactory
                 .select(board)
@@ -97,18 +78,6 @@ public class BoardRepositorySupport {
                         board.use.eq(UseYn.USE)
                 )
                 .orderBy(board.hierarchicalBoard.groupOrder.asc())
-                .fetch();
-    }
-
-    public List<Comment> getCommentListByCommonParentId(Long commonParentId) {
-        return jpaQueryFactory
-                .select(comment)
-                .from(comment)
-                .where(
-                        comment.hierarchicalBoard.commonParentId.eq(commonParentId),
-                        comment.use.eq(UseYn.USE)
-                )
-                .orderBy(comment.hierarchicalBoard.groupOrder.asc())
                 .fetch();
     }
 

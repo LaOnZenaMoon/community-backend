@@ -23,14 +23,6 @@ public class BoardVo {
         private LocalDateTime boardCreatedDateTime;
         private Long userId;
         private String userIdentifier;
-
-        public void setUserId(Long userId) {
-            this.userId = userId;
-        }
-
-        public void setUserIdentifier(String userIdentifier) {
-            this.userIdentifier = userIdentifier;
-        }
     }
 
 }

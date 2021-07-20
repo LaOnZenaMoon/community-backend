@@ -1,11 +1,11 @@
 package me.lozm.api.board.service;
 
 import lombok.RequiredArgsConstructor;
-import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.domain.board.dto.CommentDto;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
-import me.lozm.domain.board.repository.BoardRepositorySupport;
+import me.lozm.domain.board.repository.BoardRepository;
+import me.lozm.domain.board.repository.BoardRepositoryImpl;
 import me.lozm.domain.board.repository.CommentRepository;
 import me.lozm.domain.board.service.BoardHelperService;
 import me.lozm.domain.board.service.CommentHelperService;
@@ -26,14 +26,13 @@ import static java.lang.String.format;
 public class CommentService {
 
     private final BoardHelperService boardHelperService;
-    private final BoardRepositorySupport boardRepositorySupport;
     private final CommentRepository commentRepository;
     private final CommentHelperService commentHelperService;
 
 
     public Page<Comment> getCommentList(Long boardId, Pageable pageable) {
-        List<Comment> commentList = boardRepositorySupport.getCommentList(boardId, pageable);
-        long totalCount = boardRepositorySupport.getCommentTotalCount(boardId);
+        List<Comment> commentList = commentRepository.getCommentList(boardId, pageable);
+        long totalCount = commentRepository.getCommentTotalCount(boardId);
         return new PageImpl<>(commentList, pageable, totalCount);
     }
 
@@ -52,7 +51,7 @@ public class CommentService {
         final Long commonParentId = requestDto.getCommonParentId();
         final Long parentId = requestDto.getParentId();
 
-        List<Comment> commentList = boardRepositorySupport.getCommentListByCommonParentId(commonParentId);
+        List<Comment> commentList = commentRepository.getCommentListByCommonParentId(commonParentId);
         if (commentList.size() == 0) {
             throw new IllegalArgumentException(format("존재하지 않는 댓글입니다. 댓글 ID: [%d]", commonParentId));
         }

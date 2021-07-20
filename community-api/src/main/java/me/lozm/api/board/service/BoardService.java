@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.repository.BoardRepository;
-import me.lozm.domain.board.repository.BoardRepositorySupport;
 import me.lozm.domain.board.service.BoardHelperService;
 import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
@@ -26,12 +25,11 @@ public class BoardService {
 
     private final BoardRepository boardRepository;
     private final BoardHelperService boardHelperService;
-    private final BoardRepositorySupport boardRepositorySupport;
 
 
     public Page<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable) {
-        final List<BoardVo.ListInfo> boardList = boardRepositorySupport.getBoardList(boardType, pageable);
-        long totalCount = boardRepositorySupport.getBoardTotalCount(boardType);
+        final List<BoardVo.ListInfo> boardList = boardRepository.getBoardList(boardType, pageable);
+        long totalCount = boardRepository.getBoardTotalCount(boardType);
         return new PageImpl<>(boardList, pageable, totalCount);
     }
 
@@ -54,7 +52,7 @@ public class BoardService {
         final Long commonParentId = requestDto.getCommonParentId();
         final Long parentId = requestDto.getParentId();
 
-        List<Board> boardList = boardRepositorySupport.getBoardListByCommonParentId(commonParentId);
+        List<Board> boardList = boardRepository.getBoardListByCommonParentId(commonParentId);
         if (boardList.size() == 0) {
             throw new IllegalArgumentException(format("존재하지 않는 게시글입니다. 게시판 ID: [%d]", commonParentId));
         }
