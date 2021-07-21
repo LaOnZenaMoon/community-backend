@@ -18,7 +18,7 @@ spring:
           batch_size: 1000
         order_inserts: true
         order_updates: true
-    open-in-view: false
+    open-in-view: true
   cache:
     ehcache:
       config: classpath:ehcache.xml

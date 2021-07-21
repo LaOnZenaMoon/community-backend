@@ -33,7 +33,7 @@ public abstract class BaseEntity {
     private Long createdBy;
 
     @Setter
-    @Column(name = "MODIFY_BY")
+    @Column(name = "MODIFIED_BY")
     private Long modifiedBy;
 
     @Setter

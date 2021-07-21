@@ -10,6 +10,7 @@ import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
+import me.lozm.global.code.UsersType;
 import me.lozm.global.common.BaseUserDto;
 import me.lozm.global.common.HierarchicalEntity;
 import org.springframework.data.domain.Page;
@@ -67,6 +68,9 @@ public class BoardDto {
         private String title;
         private String content;
         private UseYn use;
+        private LocalDateTime createdDateTime;
+        private Long createdUserId;
+        private String createdUserIdentifier;
 
         public static ResponseOne from(Board board) {
             return ResponseOne.builder()
@@ -76,6 +80,11 @@ public class BoardDto {
                     .title(board.getTitle())
                     .content(board.getContent())
                     .use(board.getUse())
+                    .createdDateTime(board.getCreatedDateTime())
+                    .createdUserId(board.getCreatedUser().getId())
+                    //TODO 이슈 해결
+                    // javax.persistence.EntityNotFoundException: Unable to find me.lozm.domain.user.entity.User with id -3
+                    .createdUserIdentifier(board.getCreatedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? UsersType.API_SYSTEM.getDescription() : board.getCreatedUser().getIdentifier())
                     .build();
         }
     }

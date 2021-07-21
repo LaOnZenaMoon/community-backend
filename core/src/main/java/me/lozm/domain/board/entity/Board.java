@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import me.lozm.domain.user.entity.User;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
@@ -60,6 +61,14 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREATED_BY", insertable = false, updatable = false)
+    private User createdUser;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MODIFIED_BY", insertable = false, updatable = false)
+    private User modifiedUser;
 
 
     public void edit(BoardType boardType, ContentType contentType, String title, String content, Long modifiedBy, UseYn useYn) {
