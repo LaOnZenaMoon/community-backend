@@ -1,4 +1,4 @@
-package me.lozm.global.config;
+package me.lozm.global.config.ehcache;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
