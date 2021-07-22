@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class EhCacheConfig {
 
-    @Bean("customKeyGenerator")
-    public KeyGenerator keyGenerator() {
+    @Bean
+    public KeyGenerator customKeyGenerator() {
         return new CustomKeyGenerator();
     }
 
