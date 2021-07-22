@@ -22,7 +22,7 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class CodeController {
 
-    @Cacheable(cacheNames = "getDefaultCache")
+    @Cacheable(cacheNames = "getDefaultCache", keyGenerator = "customKeyGenerator")
     @ApiOperation(value = "게시판 유형 코드 조회")
     @GetMapping("board-type")
     public List<String> getBoardType() {
@@ -31,7 +31,7 @@ public class CodeController {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(cacheNames = "getDefaultCache")
+    @Cacheable(cacheNames = "getDefaultCache", keyGenerator = "customKeyGenerator")
     @ApiOperation(value = "게시판 내용 유형 코드 조회")
     @GetMapping("content-type")
     public List<String> getContentType() {
@@ -40,7 +40,7 @@ public class CodeController {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(cacheNames = "getDefaultCache")
+    @Cacheable(cacheNames = "getDefaultCache", keyGenerator = "customKeyGenerator")
     @ApiOperation(value = "게시판 댓글 유형 코드 조회")
     @GetMapping("comment-type")
     public List<String> getCommentType() {
@@ -49,7 +49,7 @@ public class CodeController {
                 .collect(Collectors.toList());
     }
 
-    @Cacheable(cacheNames = "getDefaultCache")
+    @Cacheable(cacheNames = "getDefaultCache", keyGenerator = "customKeyGenerator")
     @ApiOperation(value = "사용자 유형 코드 조회")
     @GetMapping("users-type")
     public List<String> getUsersType() {
