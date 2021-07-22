@@ -8,6 +8,7 @@ import me.lozm.domain.board.service.BoardHelperService;
 import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.UseYn;
+import me.lozm.object.dto.SearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -27,9 +28,9 @@ public class BoardService {
     private final BoardHelperService boardHelperService;
 
 
-    public Page<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable) {
-        final List<BoardVo.ListInfo> boardList = boardRepository.getBoardList(boardType, pageable);
-        long totalCount = boardRepository.getBoardTotalCount(boardType);
+    public Page<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto) {
+        final List<BoardVo.ListInfo> boardList = boardRepository.getBoardList(boardType, pageable, searchDto);
+        long totalCount = boardRepository.getBoardTotalCount(boardType, searchDto);
         return new PageImpl<>(boardList, pageable, totalCount);
     }
 

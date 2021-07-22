@@ -1,23 +1,24 @@
 package me.lozm.domain.board.repository;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.lozm.domain.board.entity.Board;
-import me.lozm.domain.board.entity.Comment;
 import me.lozm.domain.board.vo.BoardVo;
-import me.lozm.domain.user.entity.QUser;
 import me.lozm.global.code.BoardType;
+import me.lozm.global.code.SearchType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
+import me.lozm.object.dto.SearchDto;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import static me.lozm.domain.board.entity.QBoard.board;
-import static me.lozm.domain.board.entity.QComment.comment;
 import static me.lozm.domain.user.entity.QUser.user;
 
 
@@ -29,7 +30,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
 
     @Override
-    public List<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable) {
+    public List<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto) {
         return jpaQueryFactory
                 .select(Projections.fields(
                         BoardVo.ListInfo.class,
@@ -48,8 +49,9 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 .leftJoin(user).on(user.id.eq(board.createdBy))
                 .where(
                         checkBoardType(boardType),
+                        search(searchDto),
                         board.use.eq(UseYn.USE)
-                )
+                        )
                 .orderBy(board.hierarchicalBoard.commonParentId.desc(), board.hierarchicalBoard.groupOrder.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -57,12 +59,13 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
     }
 
     @Override
-    public long getBoardTotalCount(BoardType boardType) {
+    public long getBoardTotalCount(BoardType boardType, SearchDto searchDto) {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
                 .where(
                         checkBoardType(boardType),
+                        search(searchDto),
                         board.use.eq(UseYn.USE)
                 )
                 .fetchCount();
@@ -88,6 +91,18 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         }
 
         return board.boardType.eq(boardType);
+    }
+
+    private Predicate search(SearchDto searchDto) {
+        if (StringUtils.isBlank(searchDto.getSearchContent())) {
+            return null;
+        }
+
+        if (searchDto.getSearchType() == SearchType.TITLE) {
+            return board.title.like("%" + searchDto.getSearchContent() + "%");
+        }
+
+        return null;
     }
 
 }

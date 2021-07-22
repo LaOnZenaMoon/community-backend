@@ -7,6 +7,7 @@ import me.lozm.api.board.service.BoardService;
 import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.global.code.BoardType;
 import me.lozm.object.dto.PageDto;
+import me.lozm.object.dto.SearchDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,8 +24,10 @@ public class BoardController {
 
     @ApiOperation("게시판 목록 조회")
     @GetMapping("boardType/{boardType}")
-    public BoardDto.ResponseList getBoardList(@PathVariable("boardType") BoardType boardType, PageDto pageDto) {
-        return BoardDto.ResponseList.createBoardList(boardService.getBoardList(boardType, pageDto.getPageRequest()));
+    public BoardDto.ResponseList getBoardList(@PathVariable("boardType") BoardType boardType,
+                                              PageDto pageDto,
+                                              SearchDto searchDto) {
+        return BoardDto.ResponseList.createBoardList(boardService.getBoardList(boardType, pageDto.getPageRequest(), searchDto));
     }
 
     @ApiOperation("게시판 상세 조회")
