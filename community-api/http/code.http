@@ -1,0 +1,35 @@
+### 게시판 유형 코드 조회
+GET {{host}}/code/board-type
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
+
+### 게시판 내용 유형 코드 조회
+GET {{host}}/code/content-type
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
+
+### 게시판 댓글 유형 코드 조회
+GET {{host}}/code/comment-type
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
+
+### 사용자 유형 코드 조회
+GET {{host}}/code/users-type
+
+> {%
+client.test("Request executed successfully", function() {
+  client.assert(response.status == 200, "Response status is not 200");
+});
+%}
