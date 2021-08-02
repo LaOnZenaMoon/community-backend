@@ -10,7 +10,7 @@
 ```
 lozm:
   data:
-    enabled: false
+    enabled: true
     size: 1000
 ```
 
