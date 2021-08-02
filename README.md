@@ -5,6 +5,14 @@
 ## community-api
 * REST API Documentation 
 * http://{{host}}:8880/swagger-ui.html
+* (Optional) Load the initial sample data
+  * Add the below code in application.yml
+```
+lozm:
+  data:
+    enabled: false
+    size: 1000
+```
 
 ## core
 * common entities and utils
