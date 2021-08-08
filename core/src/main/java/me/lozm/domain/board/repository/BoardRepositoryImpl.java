@@ -41,6 +41,7 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                         board.viewCount.as("boardViewCount"),
                         board.title.as("boardTitle"),
                         board.content.as("boardContent"),
+                        board.use.as("boardUse"),
                         board.createdDateTime.as("boardCreatedDateTime"),
                         user.id.coalesce(UsersType.API_SYSTEM.getCode()).as("userId"),
                         user.identifier.coalesce(UsersType.API_SYSTEM.getDescription()).as("userIdentifier")
