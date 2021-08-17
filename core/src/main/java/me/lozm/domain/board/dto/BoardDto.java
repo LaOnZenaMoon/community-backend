@@ -11,8 +11,8 @@ import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
-import me.lozm.global.common.BaseUserDto;
-import me.lozm.global.common.HierarchicalEntity;
+import me.lozm.global.object.dto.BaseUserDto;
+import me.lozm.global.object.entity.HierarchicalEntity;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotNull;
@@ -92,7 +92,6 @@ public class BoardDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddRequest extends BaseUserDto {
         @NotNull
         private BoardType boardType;
@@ -124,7 +123,6 @@ public class BoardDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddReplyRequest extends AddRequest {
         @NotNull
         private Long commonParentId;
@@ -150,7 +148,6 @@ public class BoardDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class EditRequest extends BaseUserDto {
         @NotNull
         private Long id;
@@ -167,7 +164,6 @@ public class BoardDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
         private Long id;

@@ -1,4 +1,4 @@
-package me.lozm.object.dto;
+package me.lozm.global.object.dto;
 
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;

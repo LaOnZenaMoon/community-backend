@@ -1,4 +1,4 @@
-package me.lozm.global.common;
+package me.lozm.global.object.entity;
 
 import lombok.Getter;
 import lombok.Setter;

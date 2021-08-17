@@ -8,7 +8,7 @@ import me.lozm.domain.board.service.BoardHelperService;
 import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.UseYn;
-import me.lozm.object.dto.SearchDto;
+import me.lozm.global.object.dto.SearchDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;

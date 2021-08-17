@@ -1,4 +1,4 @@
-package me.lozm.global.common;
+package me.lozm.global.object.vo;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

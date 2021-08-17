@@ -1,4 +1,4 @@
-package me.lozm.object.dto;
+package me.lozm.global.object.dto;
 
 import lombok.Getter;
 import lombok.Setter;

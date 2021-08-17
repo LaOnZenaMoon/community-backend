@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import me.lozm.api.board.service.BoardService;
 import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.global.code.BoardType;
-import me.lozm.object.dto.PageDto;
-import me.lozm.object.dto.SearchDto;
+import me.lozm.global.object.dto.PageDto;
+import me.lozm.global.object.dto.SearchDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

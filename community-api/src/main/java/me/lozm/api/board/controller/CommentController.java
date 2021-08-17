@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.lozm.api.board.service.CommentService;
 import me.lozm.domain.board.dto.CommentDto;
-import me.lozm.object.dto.PageDto;
+import me.lozm.global.object.dto.PageDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

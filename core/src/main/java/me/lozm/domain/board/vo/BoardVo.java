@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
-import me.lozm.global.common.HierarchicalEntity;
+import me.lozm.global.object.entity.HierarchicalEntity;
 
 import java.time.LocalDateTime;
 

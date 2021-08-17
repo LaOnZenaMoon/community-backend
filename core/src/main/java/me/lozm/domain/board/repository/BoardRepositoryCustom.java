@@ -3,7 +3,7 @@ package me.lozm.domain.board.repository;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.vo.BoardVo;
 import me.lozm.global.code.BoardType;
-import me.lozm.object.dto.SearchDto;
+import me.lozm.global.object.dto.SearchDto;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

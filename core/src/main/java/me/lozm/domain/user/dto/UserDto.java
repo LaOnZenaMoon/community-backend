@@ -7,7 +7,7 @@ import lombok.experimental.SuperBuilder;
 import me.lozm.domain.user.entity.User;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
-import me.lozm.global.common.BaseUserDto;
+import me.lozm.global.object.dto.BaseUserDto;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotNull;

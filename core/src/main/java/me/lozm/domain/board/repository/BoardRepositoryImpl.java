@@ -11,7 +11,7 @@ import me.lozm.global.code.BoardType;
 import me.lozm.global.code.SearchType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
-import me.lozm.object.dto.SearchDto;
+import me.lozm.global.object.dto.SearchDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

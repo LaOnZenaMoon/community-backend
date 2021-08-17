@@ -11,8 +11,8 @@ import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.BoardTypeConverter;
 import me.lozm.global.code.converter.ContentTypeConverter;
-import me.lozm.global.common.HierarchicalEntity;
-import me.lozm.global.common.BaseEntity;
+import me.lozm.global.object.entity.HierarchicalEntity;
+import me.lozm.global.object.entity.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
@@ -20,13 +20,14 @@ import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
-@Table(schema = "LOZM", name = "BOARD")
-@Entity
 @Getter
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(name = "BOARD_SEQ_GEN", sequenceName = "BOARD_SEQ", initialValue = 1, allocationSize = 1)
+
+@Entity
+@Table(schema = "LOZM", name = "BOARD")
+@SequenceGenerator(name = "BOARD_SEQ_GEN", sequenceName = "BOARD_SEQ", allocationSize = 50)
 public class Board extends BaseEntity {
 
     @Id

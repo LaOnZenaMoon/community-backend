@@ -9,8 +9,8 @@ import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
 import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
-import me.lozm.global.common.BaseUserDto;
-import me.lozm.global.common.HierarchicalEntity;
+import me.lozm.global.object.dto.BaseUserDto;
+import me.lozm.global.object.entity.HierarchicalEntity;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotEmpty;
@@ -69,7 +69,6 @@ public class CommentDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddRequest extends BaseUserDto {
         @NotNull
         private Long boardId;
@@ -96,7 +95,6 @@ public class CommentDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class AddReplyRequest extends AddRequest {
         @NotNull
         private Long commonParentId;
@@ -120,7 +118,6 @@ public class CommentDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class EditRequest extends BaseUserDto {
         @NotNull
         private Long id;
@@ -133,7 +130,6 @@ public class CommentDto {
     @Getter
     @SuperBuilder
     @NoArgsConstructor
-    @AllArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
         private Long id;

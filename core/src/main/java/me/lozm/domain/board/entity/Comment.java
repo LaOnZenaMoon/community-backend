@@ -8,8 +8,8 @@ import lombok.experimental.SuperBuilder;
 import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.CommentTypeConverter;
-import me.lozm.global.common.BaseEntity;
-import me.lozm.global.common.HierarchicalEntity;
+import me.lozm.global.object.entity.BaseEntity;
+import me.lozm.global.object.entity.HierarchicalEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.ObjectUtils;
 
@@ -17,13 +17,15 @@ import javax.persistence.*;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 
-@Table(schema = "LOZM", name = "COMMENTS")
-@Entity
+
 @Getter
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@SequenceGenerator(name = "COMMENT_SEQ_GEN", sequenceName = "COMMENT_SEQ", initialValue = 1, allocationSize = 50)
+
+@Entity
+@Table(schema = "LOZM", name = "COMMENTS")
+@SequenceGenerator(name = "COMMENT_SEQ_GEN", sequenceName = "COMMENT_SEQ", allocationSize = 50)
 public class Comment extends BaseEntity {
 
     @Id
