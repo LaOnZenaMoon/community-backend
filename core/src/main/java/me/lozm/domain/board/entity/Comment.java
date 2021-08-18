@@ -5,17 +5,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import me.lozm.domain.user.entity.User;
 import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.CommentTypeConverter;
 import me.lozm.global.object.entity.BaseEntity;
 import me.lozm.global.object.entity.HierarchicalEntity;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.ObjectUtils;
+import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 
 @Getter
@@ -52,17 +54,27 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREATED_BY", insertable = false, updatable = false)
+    private User createdUser;
 
-    public void edit(CommentType commentType, String content, Long modifiedBy, UseYn useYn) {
-        this.commentType = ObjectUtils.isEmpty(commentType) ? this.commentType : commentType;
-        this.content = StringUtils.isEmpty(content) ? this.content : content;
-        setModifiedBy(org.apache.commons.lang3.ObjectUtils.isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
-        setUse(org.apache.commons.lang3.ObjectUtils.isEmpty(useYn) ? getUse() : useYn);
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MODIFIED_BY", insertable = false, updatable = false)
+    private User modifiedUser;
+
+
+    public void edit(User user, UseYn useYn, CommentType commentType, String content) {
+        setModifiedBy(user.getId());
+        this.modifiedUser = user;
+        setUse(isEmpty(UseYn.USE) ? UseYn.USE : useYn);
+        this.commentType = isEmpty(commentType) ? this.commentType : commentType;
+        this.content = isEmpty(content) ? this.content : content;
     }
 
-    public void remove(Long modifiedBy, UseYn useYn) {
-        setModifiedBy(isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
-        setUse(isEmpty(useYn) ? getUse() : useYn);
+    public void remove(User user) {
+        setModifiedBy(user.getId());
+        this.modifiedUser = user;
+        setUse(UseYn.NOT_USE);
     }
 
 }

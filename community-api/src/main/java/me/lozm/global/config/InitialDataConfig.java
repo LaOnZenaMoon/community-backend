@@ -9,15 +9,17 @@ import me.lozm.domain.board.dto.BoardDto;
 import me.lozm.domain.board.dto.CommentDto;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.repository.BoardRepository;
-import me.lozm.global.code.BoardType;
-import me.lozm.global.code.CommentType;
-import me.lozm.global.code.ContentType;
+import me.lozm.domain.user.entity.User;
+import me.lozm.domain.user.repository.UserRepository;
+import me.lozm.global.code.*;
+import me.lozm.global.object.entity.HierarchicalEntity;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +36,7 @@ public class InitialDataConfig {
     private final BoardService boardService;
     private final CommentService commentService;
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
 
     private final int DATA_SIZE_LIMIT = 2000;
@@ -71,6 +74,8 @@ public class InitialDataConfig {
         final BoardType[] boardTypes = BoardType.values();
         final ContentType[] contentTypes = ContentType.values();
 
+        final List<User> userList = userRepository.findAll();
+
         // board
         for (int i = 0; i < size; i++) {
             boardService.addBoard(BoardDto.AddRequest.builder()
@@ -78,6 +83,7 @@ public class InitialDataConfig {
                     .contentType(contentTypes[random.nextInt(contentTypes.length)])
                     .title(faker.book().title())
                     .content(getRandomContent(faker, random))
+                    .createdBy(userList.get(random.nextInt(userList.size())).getId())
                     .build());
         }
 
@@ -88,10 +94,10 @@ public class InitialDataConfig {
 
         for (int i = 0; i < size; i++) {
             commentService.addComment(CommentDto.AddRequest.builder()
-                    .boardId(boardList.get(random.nextInt(boardList.size()))
-                            .getId())
+                    .boardId(boardList.get(random.nextInt(boardList.size())).getId())
                     .commentType(commentTypes[random.nextInt(commentTypes.length)])
                     .content(getRandomContent(faker, random))
+                    .createdBy(userList.get(random.nextInt(userList.size())).getId())
                     .build());
         }
     }

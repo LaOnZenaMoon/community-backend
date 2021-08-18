@@ -3,6 +3,7 @@ POST {{host}}/board
 Content-Type: application/json
 
 {
+  "createdBy": 1,
   "boardType": "ALL",
   "contentType": "GENERAL",
   "title": "Where can I get some?",

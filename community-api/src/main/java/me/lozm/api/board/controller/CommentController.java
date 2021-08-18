@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Api(tags = {"게시판 댓글"})
-@CrossOrigin
 @RequestMapping("comment")
 @RestController
 @RequiredArgsConstructor
@@ -22,32 +21,32 @@ public class CommentController {
 
     @ApiOperation("게시판 댓글 목록 조회")
     @GetMapping("board/{boardId}")
-    public CommentDto.ResponseList getCommentList(@PathVariable("boardId") Long boardId, PageDto pageDto) {
-        return CommentDto.ResponseList.createCommentList(commentService.getCommentList(boardId, pageDto.getPageRequest()));
+    public CommentDto.CommentList getCommentList(@PathVariable("boardId") Long boardId, PageDto pageDto) {
+        return commentService.getCommentList(boardId, pageDto.getPageRequest());
     }
 
     @ApiOperation("신규 게시판 댓글 추가")
     @PostMapping
-    public CommentDto.ResponseOne addComment(@RequestBody @Valid CommentDto.AddRequest requestDto) {
-        return CommentDto.ResponseOne.from(commentService.addComment(requestDto));
+    public CommentDto.CommentInfo addComment(@RequestBody @Valid CommentDto.AddRequest requestDto) {
+        return commentService.addComment(requestDto);
     }
 
     @ApiOperation("신규 게시판 댓글 추가")
     @PostMapping("reply")
-    public CommentDto.ResponseOne addReplyComment(@RequestBody @Valid CommentDto.AddReplyRequest requestDto) {
-        return CommentDto.ResponseOne.from(commentService.addRelyComment(requestDto));
+    public CommentDto.CommentInfo addReplyComment(@RequestBody @Valid CommentDto.AddReplyRequest requestDto) {
+        return commentService.addRelyComment(requestDto);
     }
 
     @ApiOperation("게시판 댓글 수정")
     @PutMapping("{commentId}")
-    public CommentDto.ResponseOne editComment(@PathVariable("commentId") Long commentId, @RequestBody @Valid CommentDto.EditRequest requestDto) {
-        return CommentDto.ResponseOne.from(commentService.editComment(requestDto));
+    public CommentDto.CommentInfo editComment(@PathVariable("commentId") Long commentId, @RequestBody @Valid CommentDto.EditRequest requestDto) {
+        return commentService.editComment(requestDto);
     }
 
     @ApiOperation("게시판 댓글 삭제")
-    @DeleteMapping("{commentId}")
-    public CommentDto.ResponseOne removeComment(@PathVariable("commentId") Long commentId) {
-        return CommentDto.ResponseOne.from(commentService.removeComment(commentId));
+    @DeleteMapping("{commentId}/user/{userId}")
+    public CommentDto.CommentInfo removeComment(@PathVariable("commentId") Long commentId, @PathVariable("userId") Long userId) {
+        return commentService.removeComment(commentId, userId);
     }
 
 }

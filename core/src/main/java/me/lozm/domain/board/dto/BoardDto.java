@@ -1,12 +1,12 @@
 package me.lozm.domain.board.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.vo.BoardVo;
+import me.lozm.domain.user.entity.User;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
@@ -22,7 +22,7 @@ public class BoardDto {
 
     @Getter
     @Builder
-    public static class ResponseListInfo {
+    public static class BoardListInfo {
         private Long id;
         private BoardType boardType;
         private ContentType contentType;
@@ -33,8 +33,8 @@ public class BoardDto {
         private Long createdUserId;
         private String createdUserIdentifier;
 
-        public static ResponseListInfo from(BoardVo.ListInfo boardInfo) {
-            return ResponseListInfo.builder()
+        public static BoardListInfo from(BoardVo.ListInfo boardInfo) {
+            return BoardListInfo.builder()
                     .id(boardInfo.getBoardId())
                     .boardType(boardInfo.getBoardType())
                     .contentType(boardInfo.getBoardContentType())
@@ -49,19 +49,19 @@ public class BoardDto {
     }
 
     @Getter
-    public static class ResponseList {
-        Page<ResponseListInfo> boardList;
+    public static class BoardList {
+        Page<BoardListInfo> boardList;
 
-        public static ResponseList createBoardList(Page<BoardVo.ListInfo> boardList) {
-            ResponseList list = new ResponseList();
-            list.boardList = boardList.map(ResponseListInfo::from);
+        public static BoardList createBoardList(Page<BoardVo.ListInfo> boardList) {
+            BoardList list = new BoardList();
+            list.boardList = boardList.map(BoardListInfo::from);
             return list;
         }
     }
 
     @Getter
     @Builder
-    public static class ResponseOne {
+    public static class BoardInfo {
         private Long id;
         private BoardType boardType;
         private ContentType contentType;
@@ -72,8 +72,10 @@ public class BoardDto {
         private Long createdUserId;
         private String createdUserIdentifier;
 
-        public static ResponseOne from(Board board) {
-            return ResponseOne.builder()
+        public static BoardInfo from(Board board) {
+            final User createdUser = board.getCreatedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? User.from(UsersType.API_SYSTEM) : board.getCreatedUser();
+
+            return BoardInfo.builder()
                     .id(board.getId())
                     .boardType(board.getBoardType())
                     .contentType(board.getContentType())
@@ -81,10 +83,8 @@ public class BoardDto {
                     .content(board.getContent())
                     .use(board.getUse())
                     .createdDateTime(board.getCreatedDateTime())
-                    .createdUserId(board.getCreatedUser().getId())
-                    //TODO 이슈 해결
-                    // javax.persistence.EntityNotFoundException: Unable to find me.lozm.domain.user.entity.User with id -3
-                    .createdUserIdentifier(board.getCreatedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? UsersType.API_SYSTEM.getDescription() : board.getCreatedUser().getIdentifier())
+                    .createdUserId(createdUser.getId())
+                    .createdUserIdentifier(createdUser.getIdentifier())
                     .build();
         }
     }
@@ -104,20 +104,6 @@ public class BoardDto {
 
         @NotNull
         private String content;
-
-        public static Board createEntity(AddRequest requestDto) {
-            return Board.builder()
-                    .hierarchicalBoard(HierarchicalEntity.createEntity())
-                    .boardType(requestDto.getBoardType())
-                    .contentType(requestDto.getContentType())
-                    .viewCount(0L)
-                    .title(requestDto.getTitle())
-                    .content(requestDto.getContent())
-                    .createdBy(requestDto.getCreatedBy())
-                    .createdDateTime(LocalDateTime.now())
-                    .use(UseYn.USE)
-                    .build();
-        }
     }
 
     @Getter
@@ -129,20 +115,6 @@ public class BoardDto {
 
         @NotNull
         private Long parentId;
-
-        public static Board createEntity(AddReplyRequest requestDto) {
-            return Board.builder()
-                    .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.getCommonParentId(), requestDto.getParentId()))
-                    .boardType(requestDto.getBoardType())
-                    .contentType(requestDto.getContentType())
-                    .viewCount(0L)
-                    .title(requestDto.getTitle())
-                    .content(requestDto.getContent())
-                    .createdBy(requestDto.getCreatedBy())
-                    .createdDateTime(LocalDateTime.now())
-                    .use(UseYn.USE)
-                    .build();
-        }
     }
 
     @Getter
@@ -159,6 +131,8 @@ public class BoardDto {
         private String title;
 
         private String content;
+
+        private UseYn useYn;
     }
 
     @Getter

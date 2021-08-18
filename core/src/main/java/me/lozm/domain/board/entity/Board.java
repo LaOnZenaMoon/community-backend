@@ -19,6 +19,7 @@ import javax.persistence.*;
 import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Getter
 @SuperBuilder
@@ -72,18 +73,26 @@ public class Board extends BaseEntity {
     private User modifiedUser;
 
 
-    public void edit(BoardType boardType, ContentType contentType, String title, String content, Long modifiedBy, UseYn useYn) {
+    public void edit(User user,
+                     UseYn useYn,
+                     BoardType boardType,
+                     ContentType contentType,
+                     String title,
+                     String content) {
+
+        setModifiedBy(user.getId());
+        this.modifiedUser = user;
+        setUse(isEmpty(useYn) ? UseYn.USE : useYn);
         this.boardType = isEmpty(boardType) ? this.boardType : boardType;
         this.contentType = isEmpty(contentType) ? this.contentType : contentType;
-        this.title = StringUtils.isEmpty(title) ? this.title : title;
-        this.content = StringUtils.isEmpty(content) ? this.content : content;
-        setModifiedBy(isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
-        setUse(isEmpty(useYn) ? getUse() : useYn);
+        this.title = isEmpty(title) ? this.title : title;
+        this.content = isEmpty(content) ? this.content : content;
     }
 
-    public void remove(Long modifiedBy, UseYn useYn) {
-        setModifiedBy(isEmpty(modifiedBy) ? getModifiedBy() : modifiedBy);
-        setUse(isEmpty(useYn) ? getUse() : useYn);
+    public void remove(User user) {
+        setModifiedBy(user.getId());
+        this.modifiedUser = user;
+        setUse(UseYn.NOT_USE);
     }
 
     public void addViewCount() {

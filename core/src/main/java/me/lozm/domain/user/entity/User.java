@@ -45,6 +45,15 @@ public class User extends BaseEntity {
     private UsersType type;
 
 
+    public static User from(UsersType usersType) {
+        return User.builder()
+                .id(usersType.getCode())
+                .identifier(usersType.getDescription())
+                .name(usersType.getDescription())
+                .type(usersType)
+                .build();
+    }
+
     public void edit(String name, String encodedPassword, UsersType type, Long modifiedBy, UseYn use) {
         this.name = StringUtils.isEmpty(name) ? this.name : name;
         this.password = StringUtils.isEmpty(encodedPassword) ? this.password : encodedPassword;

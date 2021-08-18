@@ -1,6 +1,5 @@
 package me.lozm.domain.board.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,14 +20,14 @@ public class CommentDto {
 
     @Getter
     @Builder
-    public static class ResponseListInfo {
+    public static class CommentListInfo {
         private Long id;
         private CommentType commentType;
         private String content;
         private UseYn use;
 
-        public static CommentDto.ResponseListInfo from(Comment comment) {
-            return CommentDto.ResponseListInfo.builder()
+        public static CommentListInfo from(Comment comment) {
+            return CommentListInfo.builder()
                     .id(comment.getId())
                     .commentType(comment.getCommentType())
                     .content(comment.getContent())
@@ -38,26 +37,26 @@ public class CommentDto {
     }
 
     @Getter
-    public static class ResponseList {
-        Page<CommentDto.ResponseListInfo> commentList;
+    public static class CommentList {
+        Page<CommentListInfo> commentList;
 
-        public static CommentDto.ResponseList createCommentList(Page<Comment> boardList) {
-            CommentDto.ResponseList list = new CommentDto.ResponseList();
-            list.commentList = boardList.map(CommentDto.ResponseListInfo::from);
+        public static CommentList createCommentList(Page<Comment> boardList) {
+            CommentList list = new CommentList();
+            list.commentList = boardList.map(CommentListInfo::from);
             return list;
         }
     }
 
     @Getter
     @Builder
-    public static class ResponseOne {
+    public static class CommentInfo {
         private Long id;
         private CommentType commentType;
         private String content;
         private UseYn use;
 
-        public static CommentDto.ResponseOne from(Comment comment) {
-            return ResponseOne.builder()
+        public static CommentInfo from(Comment comment) {
+            return CommentInfo.builder()
                     .id(comment.getId())
                     .commentType(comment.getCommentType())
                     .content(comment.getContent())
@@ -78,18 +77,6 @@ public class CommentDto {
 
         @NotEmpty
         private String content;
-
-        public static Comment createEntity(AddRequest requestDto, Board board) {
-            return Comment.builder()
-                    .hierarchicalBoard(HierarchicalEntity.createEntity())
-                    .commentType(requestDto.getCommentType())
-                    .content(requestDto.getContent())
-                    .board(board)
-                    .createdBy(requestDto.getCreatedBy())
-                    .createdDateTime(LocalDateTime.now())
-                    .use(UseYn.USE)
-                    .build();
-        }
     }
 
     @Getter
@@ -101,18 +88,6 @@ public class CommentDto {
 
         @NotNull
         private Long parentId;
-
-        public static Comment createEntity(AddReplyRequest requestDto, Board board) {
-            return Comment.builder()
-                    .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.getCommonParentId(), requestDto.getParentId()))
-                    .commentType(requestDto.getCommentType())
-                    .content(requestDto.getContent())
-                    .board(board)
-                    .createdBy(requestDto.getCreatedBy())
-                    .createdDateTime(LocalDateTime.now())
-                    .use(UseYn.USE)
-                    .build();
-        }
     }
 
     @Getter
@@ -125,6 +100,8 @@ public class CommentDto {
         private CommentType commentType;
 
         private String content;
+
+        private UseYn useYn;
     }
 
     @Getter

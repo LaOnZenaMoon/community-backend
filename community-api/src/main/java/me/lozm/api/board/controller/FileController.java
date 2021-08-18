@@ -1,5 +1,6 @@
 package me.lozm.api.board.controller;
 
+import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.lozm.api.board.service.FileService;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
-@CrossOrigin
+@Api(tags = {"파일"})
 @RequestMapping("file")
 @RestController
 @RequiredArgsConstructor

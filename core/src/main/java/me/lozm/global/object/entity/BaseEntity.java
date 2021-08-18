@@ -22,10 +22,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public abstract class BaseEntity {
 
-    @Column(name = "CREATED_DATETIME", updatable = false)
+    @Column(name = "CREATED_DATE", updatable = false)
     private LocalDateTime createdDateTime;
 
-    @Column(name = "MODIFIED_DATETIME")
+    @Column(name = "MODIFIED_DATE")
     private LocalDateTime modifiedDateTime;
 
     @Setter

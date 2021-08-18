@@ -1,5 +1,6 @@
 package me.lozm.api.board.controller;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import me.lozm.global.code.BoardType;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@CrossOrigin
+@Api(tags = {"코드"})
 @RestController
 @RequestMapping("code")
 @RequiredArgsConstructor
