@@ -15,6 +15,8 @@ import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -66,6 +68,7 @@ public class Comment extends BaseEntity {
     public void edit(User user, UseYn useYn, CommentType commentType, String content) {
         setModifiedBy(user.getId());
         this.modifiedUser = user;
+        setModifiedDateTime(LocalDateTime.now());
         setUse(isEmpty(UseYn.USE) ? UseYn.USE : useYn);
         this.commentType = isEmpty(commentType) ? this.commentType : commentType;
         this.content = isEmpty(content) ? this.content : content;
@@ -74,6 +77,7 @@ public class Comment extends BaseEntity {
     public void remove(User user) {
         setModifiedBy(user.getId());
         this.modifiedUser = user;
+        setModifiedDateTime(LocalDateTime.now());
         setUse(UseYn.NOT_USE);
     }
 

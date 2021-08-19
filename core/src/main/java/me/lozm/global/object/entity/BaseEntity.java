@@ -17,6 +17,7 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @Getter
+@Setter
 @SuperBuilder
 @MappedSuperclass
 @NoArgsConstructor
@@ -28,15 +29,12 @@ public abstract class BaseEntity {
     @Column(name = "MODIFIED_DATE")
     private LocalDateTime modifiedDateTime;
 
-    @Setter
     @Column(name = "CREATED_BY", updatable = false, nullable = false)
     private Long createdBy;
 
-    @Setter
     @Column(name = "MODIFIED_BY")
     private Long modifiedBy;
 
-    @Setter
     @Column(name = "USE_YN")
     @Convert(converter = UseYnConverter.class)
     private UseYn use = UseYn.USE;

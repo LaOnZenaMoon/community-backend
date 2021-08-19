@@ -7,10 +7,10 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.vo.BoardVo;
+import me.lozm.domain.user.entity.QUser;
 import me.lozm.global.code.BoardType;
 import me.lozm.global.code.SearchType;
 import me.lozm.global.code.UseYn;
-import me.lozm.global.code.UsersType;
 import me.lozm.global.object.dto.SearchDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static me.lozm.domain.board.entity.QBoard.board;
-import static me.lozm.domain.user.entity.QUser.user;
 
 
 @Repository
@@ -31,6 +30,9 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     @Override
     public List<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto) {
+        final QUser createdUser = new QUser("createdUser");
+        final QUser modifiedUser = new QUser("modifiedUser");
+
         return jpaQueryFactory
                 .select(Projections.fields(
                         BoardVo.ListInfo.class,
@@ -43,11 +45,15 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                         board.content.as("boardContent"),
                         board.use.as("boardUse"),
                         board.createdDateTime.as("boardCreatedDateTime"),
-                        user.id.coalesce(UsersType.API_SYSTEM.getCode()).as("userId"),
-                        user.identifier.coalesce(UsersType.API_SYSTEM.getDescription()).as("userIdentifier")
+                        createdUser.id.as("createdUserId"),
+                        createdUser.identifier.as("createdUserIdentifier"),
+                        board.modifiedDateTime.as("boardModifiedDateTime"),
+                        modifiedUser.id.as("modifiedUserId"),
+                        modifiedUser.identifier.as("modifiedUserIdentifier")
                 ))
                 .from(board)
-                .leftJoin(user).on(user.id.eq(board.createdBy))
+                .leftJoin(board.createdUser, createdUser)
+                .leftJoin(board.modifiedUser, modifiedUser)
                 .where(
                         checkBoardType(boardType),
                         search(searchDto),

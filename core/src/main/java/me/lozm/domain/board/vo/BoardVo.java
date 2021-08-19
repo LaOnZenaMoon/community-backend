@@ -21,8 +21,11 @@ public class BoardVo {
         private String boardContent;
         private UseYn boardUse;
         private LocalDateTime boardCreatedDateTime;
-        private Long userId;
-        private String userIdentifier;
+        private Long createdUserId;
+        private String createdUserIdentifier;
+        private LocalDateTime boardModifiedDateTime;
+        private Long modifiedUserId;
+        private String modifiedUserIdentifier;
     }
 
 }

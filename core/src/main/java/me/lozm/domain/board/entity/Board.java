@@ -16,6 +16,7 @@ import me.lozm.global.object.entity.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
@@ -82,6 +83,7 @@ public class Board extends BaseEntity {
 
         setModifiedBy(user.getId());
         this.modifiedUser = user;
+        setModifiedDateTime(LocalDateTime.now());
         setUse(isEmpty(useYn) ? UseYn.USE : useYn);
         this.boardType = isEmpty(boardType) ? this.boardType : boardType;
         this.contentType = isEmpty(contentType) ? this.contentType : contentType;
@@ -92,6 +94,7 @@ public class Board extends BaseEntity {
     public void remove(User user) {
         setModifiedBy(user.getId());
         this.modifiedUser = user;
+        setModifiedDateTime(LocalDateTime.now());
         setUse(UseYn.NOT_USE);
     }
 

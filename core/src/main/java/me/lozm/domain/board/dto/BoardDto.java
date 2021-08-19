@@ -12,7 +12,6 @@ import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
 import me.lozm.global.object.dto.BaseUserDto;
-import me.lozm.global.object.entity.HierarchicalEntity;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotNull;
@@ -32,6 +31,9 @@ public class BoardDto {
         private LocalDateTime createdDateTime;
         private Long createdUserId;
         private String createdUserIdentifier;
+        private LocalDateTime modifiedDateTime;
+        private Long modifiedUserId;
+        private String modifiedUserIdentifier;
 
         public static BoardListInfo from(BoardVo.ListInfo boardInfo) {
             return BoardListInfo.builder()
@@ -42,8 +44,11 @@ public class BoardDto {
                     .content(boardInfo.getBoardContent())
                     .use(boardInfo.getBoardUse())
                     .createdDateTime(boardInfo.getBoardCreatedDateTime())
-                    .createdUserId(boardInfo.getUserId())
-                    .createdUserIdentifier(boardInfo.getUserIdentifier())
+                    .createdUserId(boardInfo.getCreatedUserId())
+                    .createdUserIdentifier(boardInfo.getCreatedUserIdentifier())
+                    .modifiedDateTime(boardInfo.getBoardModifiedDateTime())
+                    .modifiedUserId(boardInfo.getModifiedUserId())
+                    .modifiedUserIdentifier(boardInfo.getModifiedUserIdentifier())
                     .build();
         }
     }
@@ -71,9 +76,19 @@ public class BoardDto {
         private LocalDateTime createdDateTime;
         private Long createdUserId;
         private String createdUserIdentifier;
+        private LocalDateTime modifiedDateTime;
+        private Long modifiedUserId;
+        private String modifiedUserIdentifier;
 
         public static BoardInfo from(Board board) {
             final User createdUser = board.getCreatedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? User.from(UsersType.API_SYSTEM) : board.getCreatedUser();
+
+            User modifiedUser;
+            if (board.getModifiedUser() == null) {
+                modifiedUser = User.builder().build();
+            } else {
+                modifiedUser = board.getModifiedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? User.from(UsersType.API_SYSTEM) : board.getModifiedUser();
+            }
 
             return BoardInfo.builder()
                     .id(board.getId())
@@ -85,6 +100,9 @@ public class BoardDto {
                     .createdDateTime(board.getCreatedDateTime())
                     .createdUserId(createdUser.getId())
                     .createdUserIdentifier(createdUser.getIdentifier())
+                    .modifiedDateTime(board.getModifiedDateTime())
+                    .modifiedUserId(modifiedUser.getId())
+                    .modifiedUserIdentifier(modifiedUser.getIdentifier())
                     .build();
         }
     }
