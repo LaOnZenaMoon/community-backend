@@ -23,10 +23,7 @@ public class BoardController {
 
     @ApiOperation("게시판 목록 조회")
     @GetMapping("boardType/{boardType}")
-    public BoardDto.BoardList getBoardList(@PathVariable("boardType") BoardType boardType,
-                                           PageDto pageDto,
-                                           SearchDto searchDto) {
-
+    public BoardDto.BoardList getBoardList(@PathVariable("boardType") BoardType boardType, PageDto pageDto, SearchDto searchDto) {
         return boardService.getBoardList(boardType, pageDto.getPageRequest(), searchDto);
     }
 

@@ -3,10 +3,7 @@ package me.lozm.api.board.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import me.lozm.global.code.BoardType;
-import me.lozm.global.code.CommentType;
-import me.lozm.global.code.ContentType;
-import me.lozm.global.code.UsersType;
+import me.lozm.global.code.*;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -55,6 +52,15 @@ public class CodeController {
     @GetMapping("users-type")
     public List<String> getUsersType() {
         return Stream.of(UsersType.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+    }
+
+    @Cacheable(cacheNames = "getDefaultCache", keyGenerator = "customKeyGenerator")
+    @ApiOperation(value = "사용 여부 유형 코드 조회")
+    @GetMapping("use-yn-type")
+    public List<String> getUseYnType() {
+        return Stream.of(UseYn.values())
                 .map(Enum::name)
                 .collect(Collectors.toList());
     }

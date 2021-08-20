@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface BoardRepositoryCustom {
 
-    List<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto);
+    List<BoardVo.BoardList> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto);
 
     long getBoardTotalCount(BoardType boardType, SearchDto searchDto);
 

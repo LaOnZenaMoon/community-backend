@@ -24,14 +24,14 @@ public class CommentDto {
         private Long id;
         private CommentType commentType;
         private String content;
-        private UseYn use;
+        private UseYn useYn;
 
         public static CommentListInfo from(Comment comment) {
             return CommentListInfo.builder()
                     .id(comment.getId())
                     .commentType(comment.getCommentType())
                     .content(comment.getContent())
-                    .use(comment.getUse())
+                    .useYn(comment.getUse())
                     .build();
         }
     }
@@ -53,14 +53,14 @@ public class CommentDto {
         private Long id;
         private CommentType commentType;
         private String content;
-        private UseYn use;
+        private UseYn useYn;
 
         public static CommentInfo from(Comment comment) {
             return CommentInfo.builder()
                     .id(comment.getId())
                     .commentType(comment.getCommentType())
                     .content(comment.getContent())
-                    .use(comment.getUse())
+                    .useYn(comment.getUse())
                     .build();
         }
     }

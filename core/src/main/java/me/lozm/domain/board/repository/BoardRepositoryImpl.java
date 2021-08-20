@@ -29,13 +29,13 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
 
     @Override
-    public List<BoardVo.ListInfo> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto) {
+    public List<BoardVo.BoardList> getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto) {
         final QUser createdUser = new QUser("createdUser");
         final QUser modifiedUser = new QUser("modifiedUser");
 
         return jpaQueryFactory
                 .select(Projections.fields(
-                        BoardVo.ListInfo.class,
+                        BoardVo.BoardList.class,
                         board.id.as("boardId"),
                         board.hierarchicalBoard.as("hierarchicalBoard"),
                         board.boardType.as("boardType"),

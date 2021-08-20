@@ -11,13 +11,10 @@ import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.CommentTypeConverter;
 import me.lozm.global.object.entity.BaseEntity;
 import me.lozm.global.object.entity.HierarchicalEntity;
-import org.apache.commons.lang3.ObjectUtils;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
 
-import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.ObjectUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 

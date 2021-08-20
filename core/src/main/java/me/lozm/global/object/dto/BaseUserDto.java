@@ -14,11 +14,11 @@ public class BaseUserDto {
 
 
     public Long getCreatedBy() {
-        return ObjectUtils.isEmpty(createdBy) ? UsersType.API_SYSTEM.getCode() : createdBy;
+        return ObjectUtils.isEmpty(createdBy) ? UsersType.SYSTEM.getCode() : createdBy;
     }
 
     public Long getModifiedBy() {
-        return ObjectUtils.isEmpty(modifiedBy) ? UsersType.API_SYSTEM.getCode() : modifiedBy;
+        return ObjectUtils.isEmpty(modifiedBy) ? UsersType.SYSTEM.getCode() : modifiedBy;
     }
 
 }

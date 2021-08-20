@@ -33,7 +33,7 @@ public class BoardService {
 
 
     public BoardDto.BoardList getBoardList(BoardType boardType, Pageable pageable, SearchDto searchDto) {
-        final List<BoardVo.ListInfo> boardList = boardRepository.getBoardList(boardType, pageable, searchDto);
+        final List<BoardVo.BoardList> boardList = boardRepository.getBoardList(boardType, pageable, searchDto);
         long totalCount = boardRepository.getBoardTotalCount(boardType, searchDto);
         return BoardDto.BoardList.createBoardList(new PageImpl<>(boardList, pageable, totalCount));
     }

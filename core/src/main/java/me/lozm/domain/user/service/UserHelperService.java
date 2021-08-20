@@ -30,8 +30,8 @@ public class UserHelperService {
     }
 
     public User getUser(Long userId, UseYn useYn) {
-        if (userId.equals(UsersType.API_SYSTEM.getCode())) {
-            return User.from(UsersType.API_SYSTEM);
+        if (userId.equals(UsersType.SYSTEM.getCode())) {
+            return User.from(UsersType.SYSTEM);
         } else {
             return findUser(userId, useYn)
                     .orElseThrow(() -> new IllegalArgumentException(String.format("존재하지 않는 사용자입니다. 사용자 ID: [%d]", userId)));

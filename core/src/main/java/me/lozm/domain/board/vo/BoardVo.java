@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 public class BoardVo {
 
     @Getter
-    public static class ListInfo {
+    public static class BoardList {
         private Long boardId;
         private HierarchicalEntity hierarchicalBoard;
         private BoardType boardType;

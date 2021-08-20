@@ -27,7 +27,7 @@ public class BoardDto {
         private ContentType contentType;
         private String title;
         private String content;
-        private UseYn use;
+        private UseYn useYn;
         private LocalDateTime createdDateTime;
         private Long createdUserId;
         private String createdUserIdentifier;
@@ -35,14 +35,14 @@ public class BoardDto {
         private Long modifiedUserId;
         private String modifiedUserIdentifier;
 
-        public static BoardListInfo from(BoardVo.ListInfo boardInfo) {
+        public static BoardListInfo from(BoardVo.BoardList boardInfo) {
             return BoardListInfo.builder()
                     .id(boardInfo.getBoardId())
                     .boardType(boardInfo.getBoardType())
                     .contentType(boardInfo.getBoardContentType())
                     .title(boardInfo.getBoardTitle())
                     .content(boardInfo.getBoardContent())
-                    .use(boardInfo.getBoardUse())
+                    .useYn(boardInfo.getBoardUse())
                     .createdDateTime(boardInfo.getBoardCreatedDateTime())
                     .createdUserId(boardInfo.getCreatedUserId())
                     .createdUserIdentifier(boardInfo.getCreatedUserIdentifier())
@@ -57,7 +57,7 @@ public class BoardDto {
     public static class BoardList {
         Page<BoardListInfo> boardList;
 
-        public static BoardList createBoardList(Page<BoardVo.ListInfo> boardList) {
+        public static BoardList createBoardList(Page<BoardVo.BoardList> boardList) {
             BoardList list = new BoardList();
             list.boardList = boardList.map(BoardListInfo::from);
             return list;
@@ -72,7 +72,7 @@ public class BoardDto {
         private ContentType contentType;
         private String title;
         private String content;
-        private UseYn use;
+        private UseYn useYn;
         private LocalDateTime createdDateTime;
         private Long createdUserId;
         private String createdUserIdentifier;
@@ -81,13 +81,13 @@ public class BoardDto {
         private String modifiedUserIdentifier;
 
         public static BoardInfo from(Board board) {
-            final User createdUser = board.getCreatedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? User.from(UsersType.API_SYSTEM) : board.getCreatedUser();
+            final User createdUser = board.getCreatedUser().getId().equals(UsersType.SYSTEM.getCode()) ? User.from(UsersType.SYSTEM) : board.getCreatedUser();
 
             User modifiedUser;
             if (board.getModifiedUser() == null) {
                 modifiedUser = User.builder().build();
             } else {
-                modifiedUser = board.getModifiedUser().getId().equals(UsersType.API_SYSTEM.getCode()) ? User.from(UsersType.API_SYSTEM) : board.getModifiedUser();
+                modifiedUser = board.getModifiedUser().getId().equals(UsersType.SYSTEM.getCode()) ? User.from(UsersType.SYSTEM) : board.getModifiedUser();
             }
 
             return BoardInfo.builder()
@@ -96,7 +96,7 @@ public class BoardDto {
                     .contentType(board.getContentType())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .use(board.getUse())
+                    .useYn(board.getUse())
                     .createdDateTime(board.getCreatedDateTime())
                     .createdUserId(createdUser.getId())
                     .createdUserIdentifier(createdUser.getIdentifier())

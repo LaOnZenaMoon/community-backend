@@ -8,9 +8,11 @@ import java.util.Arrays;
 public enum UsersType {
 
     ALL(-0L, "전체"),
-    ADMIN(-1L, "관리자"),
-    USER(-2L, "사용자"),
-    API_SYSTEM(-3L, "API 시스템");
+    ADMIN(-5L, "관리자"),
+    MANAGER(-10L, "매니저"),
+    USER(-15L, "사용자"),
+    GUEST(-20L, "방문자"),
+    SYSTEM(-25L, "시스템");
 
     private Long code;
     private String description;
