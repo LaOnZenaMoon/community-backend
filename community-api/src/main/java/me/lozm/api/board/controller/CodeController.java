@@ -65,4 +65,13 @@ public class CodeController {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(cacheNames = "getDefaultCache", keyGenerator = "customKeyGenerator")
+    @ApiOperation(value = "인가 자원 유형 코드 조회")
+    @GetMapping("resource-type")
+    public List<String> getResourceType() {
+        return Stream.of(ResourceType.values())
+                .map(Enum::name)
+                .collect(Collectors.toList());
+    }
+
 }
