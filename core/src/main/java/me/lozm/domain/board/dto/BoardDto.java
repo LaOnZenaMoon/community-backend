@@ -81,7 +81,14 @@ public class BoardDto {
         private String modifiedUserIdentifier;
 
         public static BoardInfo from(Board board) {
-            final User createdUser = board.getCreatedUser().getId().equals(UsersType.SYSTEM.getCode()) ? User.from(UsersType.SYSTEM) : board.getCreatedUser();
+            User createdUser;
+            if (board.getCreatedUser() == null) {
+                createdUser = User.builder().build();
+            } else if (board.getCreatedUser().getId().equals(UsersType.SYSTEM.getCode())) {
+                createdUser = User.from(UsersType.SYSTEM);
+            } else {
+                createdUser = board.getCreatedUser();
+            }
 
             User modifiedUser;
             if (board.getModifiedUser() == null) {

@@ -5,12 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
 import me.lozm.global.code.converter.UsersTypeConverter;
 import me.lozm.global.object.entity.BaseEntity;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.util.ObjectUtils;
 
 import javax.persistence.*;
 
@@ -52,14 +49,6 @@ public class User extends BaseEntity {
                 .name(usersType.getDescription())
                 .type(usersType)
                 .build();
-    }
-
-    public void edit(String name, String encodedPassword, UsersType type, Long modifiedBy, UseYn use) {
-        this.name = StringUtils.isEmpty(name) ? this.name : name;
-        this.password = StringUtils.isEmpty(encodedPassword) ? this.password : encodedPassword;
-        this.type = ObjectUtils.isEmpty(type) ? this.type : type;
-        setModifiedBy(modifiedBy);
-        setUse(use);
     }
 
 }

@@ -4,16 +4,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import me.lozm.domain.board.dto.BoardDto;
-import me.lozm.global.code.CommentType;
+import me.lozm.domain.user.entity.User;
 import me.lozm.global.code.UseYn;
-import me.lozm.global.code.UsersType;
 import me.lozm.global.code.converter.UseYnConverter;
-import org.apache.commons.lang3.ObjectUtils;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -29,11 +24,13 @@ public abstract class BaseEntity {
     @Column(name = "MODIFIED_DATE")
     private LocalDateTime modifiedDateTime;
 
-    @Column(name = "CREATED_BY", updatable = false, nullable = false)
-    private Long createdBy;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREATED_BY", updatable = false)
+    private User createdUser;
 
-    @Column(name = "MODIFIED_BY")
-    private Long modifiedBy;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MODIFIED_BY", insertable = false, updatable = false)
+    private User modifiedUser;
 
     @Column(name = "USE_YN")
     @Convert(converter = UseYnConverter.class)

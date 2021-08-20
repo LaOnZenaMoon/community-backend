@@ -44,4 +44,4 @@ decorator:
 lozm:
   data:
     enabled: false
-    size: 100
+    size: 1000

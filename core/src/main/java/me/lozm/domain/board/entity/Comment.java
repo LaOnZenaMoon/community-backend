@@ -39,7 +39,7 @@ public class Comment extends BaseEntity {
             @AttributeOverride(name = "commonParentId", column = @Column(name = "COMMON_PARENT_COMMENT_ID")),
             @AttributeOverride(name = "parentId", column = @Column(name = "PARENT_COMMENT_ID"))
     })
-    private HierarchicalEntity hierarchicalBoard;
+    private HierarchicalEntity hierarchicalComment;
 
     @Column(name = "COMMENT_TYPE")
     @Convert(converter = CommentTypeConverter.class)
@@ -53,18 +53,11 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CREATED_BY", insertable = false, updatable = false)
-    private User createdUser;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MODIFIED_BY", insertable = false, updatable = false)
-    private User modifiedUser;
-
 
     public void edit(User user, UseYn useYn, CommentType commentType, String content) {
-        setModifiedBy(user.getId());
-        this.modifiedUser = user;
+//        setModifiedBy(user.getId());
+//        this.modifiedUser = user;
+        setModifiedUser(user);
         setModifiedDateTime(LocalDateTime.now());
         setUse(isEmpty(UseYn.USE) ? UseYn.USE : useYn);
         this.commentType = isEmpty(commentType) ? this.commentType : commentType;
@@ -72,8 +65,9 @@ public class Comment extends BaseEntity {
     }
 
     public void remove(User user) {
-        setModifiedBy(user.getId());
-        this.modifiedUser = user;
+//        setModifiedBy(user.getId());
+//        this.modifiedUser = user;
+        setModifiedUser(user);
         setModifiedDateTime(LocalDateTime.now());
         setUse(UseYn.NOT_USE);
     }

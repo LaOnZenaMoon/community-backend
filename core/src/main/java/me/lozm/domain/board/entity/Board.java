@@ -65,14 +65,6 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CREATED_BY", insertable = false, updatable = false)
-    private User createdUser;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MODIFIED_BY", insertable = false, updatable = false)
-    private User modifiedUser;
-
 
     public void edit(User user,
                      UseYn useYn,
@@ -81,8 +73,9 @@ public class Board extends BaseEntity {
                      String title,
                      String content) {
 
-        setModifiedBy(user.getId());
-        this.modifiedUser = user;
+//        setModifiedBy(user.getId());
+//        this.modifiedUser = user;
+        setModifiedUser(user);
         setModifiedDateTime(LocalDateTime.now());
         setUse(isEmpty(useYn) ? UseYn.USE : useYn);
         this.boardType = isEmpty(boardType) ? this.boardType : boardType;
@@ -92,8 +85,9 @@ public class Board extends BaseEntity {
     }
 
     public void remove(User user) {
-        setModifiedBy(user.getId());
-        this.modifiedUser = user;
+//        setModifiedBy(user.getId());
+//        this.modifiedUser = user;
+        setModifiedUser(user);
         setModifiedDateTime(LocalDateTime.now());
         setUse(UseYn.NOT_USE);
     }

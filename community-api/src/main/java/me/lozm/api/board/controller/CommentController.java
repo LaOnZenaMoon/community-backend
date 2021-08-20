@@ -25,6 +25,12 @@ public class CommentController {
         return commentService.getCommentList(boardId, pageDto.getPageRequest());
     }
 
+    @ApiOperation("게시판 댓글 상세 조회")
+    @GetMapping("{commentId}")
+    public CommentDto.CommentInfo getBoardDetail(@PathVariable("commentId") Long commentId) {
+        return commentService.getCommentDetail(commentId);
+    }
+
     @ApiOperation("신규 게시판 댓글 추가")
     @PostMapping
     public CommentDto.CommentInfo addComment(@RequestBody @Valid CommentDto.AddRequest requestDto) {

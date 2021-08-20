@@ -4,12 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
+import me.lozm.domain.board.vo.CommentVo;
 import me.lozm.global.code.CommentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.object.dto.BaseUserDto;
-import me.lozm.global.object.entity.HierarchicalEntity;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.NotEmpty;
@@ -25,13 +24,25 @@ public class CommentDto {
         private CommentType commentType;
         private String content;
         private UseYn useYn;
+        private LocalDateTime createdDateTime;
+        private Long createdUserId;
+        private String createdUserIdentifier;
+        private LocalDateTime modifiedDateTime;
+        private Long modifiedUserId;
+        private String modifiedUserIdentifier;
 
-        public static CommentListInfo from(Comment comment) {
+        public static CommentListInfo from(CommentVo.CommentList comment) {
             return CommentListInfo.builder()
-                    .id(comment.getId())
+                    .id(comment.getCommentId())
                     .commentType(comment.getCommentType())
                     .content(comment.getContent())
-                    .useYn(comment.getUse())
+                    .useYn(comment.getCommentUse())
+                    .createdDateTime(comment.getCommentCreatedDateTime())
+                    .createdUserId(comment.getCreatedUserId())
+                    .createdUserIdentifier(comment.getCreatedUserIdentifier())
+                    .modifiedDateTime(comment.getCommentModifiedDateTime())
+                    .modifiedUserId(comment.getModifiedUserId())
+                    .modifiedUserIdentifier(comment.getModifiedUserIdentifier())
                     .build();
         }
     }
@@ -40,7 +51,7 @@ public class CommentDto {
     public static class CommentList {
         Page<CommentListInfo> commentList;
 
-        public static CommentList createCommentList(Page<Comment> boardList) {
+        public static CommentList createCommentList(Page<CommentVo.CommentList> boardList) {
             CommentList list = new CommentList();
             list.commentList = boardList.map(CommentListInfo::from);
             return list;

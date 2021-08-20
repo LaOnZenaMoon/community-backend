@@ -1,17 +1,20 @@
 package me.lozm.api.board.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.lozm.domain.board.dto.CommentDto;
 import me.lozm.domain.board.entity.Board;
 import me.lozm.domain.board.entity.Comment;
 import me.lozm.domain.board.repository.CommentRepository;
 import me.lozm.domain.board.service.BoardHelperService;
 import me.lozm.domain.board.service.CommentHelperService;
+import me.lozm.domain.board.vo.CommentVo;
 import me.lozm.domain.user.entity.User;
 import me.lozm.domain.user.service.UserHelperService;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.UsersType;
 import me.lozm.global.object.entity.HierarchicalEntity;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,7 @@ import java.util.List;
 
 import static java.lang.String.format;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -34,9 +38,13 @@ public class CommentService {
 
 
     public CommentDto.CommentList getCommentList(Long boardId, Pageable pageable) {
-        List<Comment> commentList = commentRepository.getCommentList(boardId, pageable);
+        List<CommentVo.CommentList> commentList = commentRepository.getCommentList(boardId, pageable);
         long totalCount = commentRepository.getCommentTotalCount(boardId);
         return CommentDto.CommentList.createCommentList(new PageImpl<>(commentList, pageable, totalCount));
+    }
+
+    public CommentDto.CommentInfo getCommentDetail(Long commentId) {
+        return CommentDto.CommentInfo.from(commentHelperService.getComment(commentId));
     }
 
     @Transactional
@@ -44,16 +52,15 @@ public class CommentService {
         Board board = boardHelperService.getBoard(requestDto.getBoardId());
         final User createdUser = userHelperService.getUser(requestDto.getCreatedBy(), UseYn.USE);
         Comment savedComment = commentRepository.save(Comment.builder()
-                .hierarchicalBoard(HierarchicalEntity.createEntity())
+                .hierarchicalComment(HierarchicalEntity.createEntity())
                 .commentType(requestDto.getCommentType())
                 .content(requestDto.getContent())
                 .board(board)
-                .createdBy(createdUser.getId())
                 .createdUser(createdUser)
                 .createdDateTime(LocalDateTime.now())
                 .use(UseYn.USE)
                 .build());
-        savedComment.getHierarchicalBoard().setDefaultParentId(savedComment.getId());
+        savedComment.getHierarchicalComment().setDefaultParentId(savedComment.getId());
 
         return CommentDto.CommentInfo.from(savedComment);
     }
@@ -73,11 +80,10 @@ public class CommentService {
         }
 
         final Comment savedComment = commentRepository.save(Comment.builder()
-                .hierarchicalBoard(HierarchicalEntity.createEntity(requestDto.getCommonParentId(), requestDto.getParentId()))
+                .hierarchicalComment(HierarchicalEntity.createEntity(requestDto.getCommonParentId(), requestDto.getParentId()))
                 .commentType(requestDto.getCommentType())
                 .content(requestDto.getContent())
                 .board(board)
-                .createdBy(createdUser.getId())
                 .createdUser(createdUser)
                 .createdDateTime(LocalDateTime.now())
                 .use(UseYn.USE)
@@ -87,9 +93,9 @@ public class CommentService {
         final Comment commonParentComment = commentList.get(0);
         if (commonParentComment.getId().equals(commonParentId) && commonParentComment.getId().equals(parentId)) {
             updateOrders(commentList, 0);
-            savedComment.getHierarchicalBoard().setReplyInfo(
-                    commonParentComment.getHierarchicalBoard().getGroupOrder(),
-                    commonParentComment.getHierarchicalBoard().getGroupLayer()
+            savedComment.getHierarchicalComment().setReplyInfo(
+                    commonParentComment.getHierarchicalComment().getGroupOrder(),
+                    commonParentComment.getHierarchicalComment().getGroupLayer()
             );
             return CommentDto.CommentInfo.from(savedComment);
         }
@@ -108,9 +114,9 @@ public class CommentService {
         }
 
         updateOrders(commentList, repliedIndex);
-        savedComment.getHierarchicalBoard().setReplyInfo(
-                commentList.get(repliedIndex).getHierarchicalBoard().getGroupOrder(),
-                commentList.get(repliedIndex).getHierarchicalBoard().getGroupLayer()
+        savedComment.getHierarchicalComment().setReplyInfo(
+                commentList.get(repliedIndex).getHierarchicalComment().getGroupOrder(),
+                commentList.get(repliedIndex).getHierarchicalComment().getGroupLayer()
         );
 
         return CommentDto.CommentInfo.from(savedComment);
@@ -119,7 +125,16 @@ public class CommentService {
     @Transactional
     public CommentDto.CommentInfo editComment(CommentDto.EditRequest requestDto) {
         Comment comment = commentHelperService.getComment(requestDto.getId());
+        if (comment.getCreatedUser() == null) {
+            throw new IllegalStateException("댓글의 최초 작성자 정보가 없어서, 수정할 수 없습니다.");
+        }
+
         final User modifiedUser = userHelperService.getUser(requestDto.getModifiedBy(), UseYn.USE);
+        if (!comment.getCreatedUser().getId().equals(modifiedUser.getId())) {
+            throw new IllegalArgumentException(String.format("댓글의 최초 작성자만 수정할 수 있습니다. 수정 요청자 ID: [%s], Identifier: [%s]",
+                    modifiedUser.getId(), modifiedUser.getIdentifier()));
+        }
+
         comment.edit(
                 modifiedUser,
                 requestDto.getUseYn(),
@@ -131,7 +146,18 @@ public class CommentService {
     @Transactional
     public CommentDto.CommentInfo removeComment(Long commentId, Long userId) {
         Comment comment = commentHelperService.getComment(commentId);
+        if (comment.getCreatedUser() == null) {
+            throw new IllegalStateException("댓글의 최초 작성자 정보가 없어서, 삭제할 수 없습니다.");
+        }
+
         final User modifiedUser = userHelperService.getUser(userId, UseYn.USE);
+        if (modifiedUser.getType() == UsersType.ADMIN || modifiedUser.getType() == UsersType.MANAGER) {
+            log.debug(String.format("관리자 권한으로 댓글을 삭제합니다. 댓글 ID: [%d]", comment.getId()));
+        } else if (!comment.getCreatedUser().getId().equals(modifiedUser.getId())) {
+            throw new IllegalArgumentException(String.format("댓글의 최초 작성자만 삭제할 수 있습니다. 삭제 요청자 ID: [%s], Identifier: [%s]",
+                    modifiedUser.getId(), modifiedUser.getIdentifier()));
+        }
+
         comment.remove(modifiedUser);
         return CommentDto.CommentInfo.from(comment);
     }
@@ -139,7 +165,7 @@ public class CommentService {
 
     private void updateOrders(List<Comment> commentList, int startIndex) {
         for (int i = startIndex + 1; i < commentList.size(); i++) {
-            commentList.get(i).getHierarchicalBoard().setGroupOrder(commentList.get(i).getHierarchicalBoard().getGroupOrder() + 1);
+            commentList.get(i).getHierarchicalComment().setGroupOrder(commentList.get(i).getHierarchicalComment().getGroupOrder() + 1);
         }
     }
 
