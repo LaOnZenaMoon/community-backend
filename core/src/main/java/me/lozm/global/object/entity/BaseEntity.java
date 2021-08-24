@@ -29,7 +29,7 @@ public abstract class BaseEntity {
     private User createdUser;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MODIFIED_BY", insertable = false, updatable = false)
+    @JoinColumn(name = "MODIFIED_BY")
     private User modifiedUser;
 
     @Column(name = "USE_YN")
