@@ -20,6 +20,7 @@ lozm:
 ## skills
 * Java 1.8
 * Spring Boot
-* JPA, Querydsl
+* JPA
+  * Spring Data JPA, QueryDSL
 * Swagger
 * Junit5
