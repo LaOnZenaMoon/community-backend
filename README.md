@@ -24,4 +24,4 @@ lozm:
   * Spring Data JPA, QueryDSL
 * Swagger
 * Junit5
-* EhCache
+* Ehcache
