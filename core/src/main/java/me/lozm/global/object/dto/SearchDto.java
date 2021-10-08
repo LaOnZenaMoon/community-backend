@@ -11,7 +11,7 @@ import static me.lozm.global.swagger.CommonCode.*;
 @Setter
 public class SearchDto {
 
-    @ApiModelProperty(value = SEARCH_TYPE_DESCRIPTION, example = SEARCH_TYPE_DESCRIPTION)
+    @ApiModelProperty(value = SEARCH_TYPE_DESCRIPTION, example = SEARCH_TYPE_EXAMPLE)
     private SearchType searchType;
 
     @ApiModelProperty(value = SEARCH_CONTENT_DESCRIPTION, example = SEARCH_CONTENT_EXAMPLE)
