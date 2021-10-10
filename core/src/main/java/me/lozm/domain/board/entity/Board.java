@@ -11,9 +11,8 @@ import me.lozm.global.code.ContentType;
 import me.lozm.global.code.UseYn;
 import me.lozm.global.code.converter.BoardTypeConverter;
 import me.lozm.global.code.converter.ContentTypeConverter;
-import me.lozm.global.object.entity.HierarchicalEntity;
 import me.lozm.global.object.entity.BaseEntity;
-import org.apache.commons.lang3.StringUtils;
+import me.lozm.global.object.entity.HierarchicalEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

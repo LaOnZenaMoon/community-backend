@@ -1,5 +1,6 @@
 package me.lozm.domain.board.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,22 +18,48 @@ import org.springframework.data.domain.Page;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+import static me.lozm.global.swagger.BoardCode.*;
+import static me.lozm.global.swagger.CommonCode.*;
+
 public class BoardDto {
 
     @Getter
     @Builder
     public static class BoardListInfo {
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long id;
+
+        @ApiModelProperty(value = BOARD_TYPE_DESCRIPTION)
         private BoardType boardType;
+
+        @ApiModelProperty(value = CONTENT_TYPE_DESCRIPTION)
         private ContentType contentType;
+
+        @ApiModelProperty(value = TITLE_DESCRIPTION)
         private String title;
+
+        @ApiModelProperty(value = CONTENT_DESCRIPTION)
         private String content;
+
+        @ApiModelProperty(value = USE_YN_DESCRIPTION)
         private UseYn useYn;
+
+        @ApiModelProperty(value = CREATED_DATETIME_DESCRIPTION)
         private LocalDateTime createdDateTime;
+
+        @ApiModelProperty(value = CREATED_BY_DESCRIPTION)
         private Long createdUserId;
+
+        @ApiModelProperty(value = CREATED_USER_LOGIN_ID_DESCRIPTION)
         private String createdUserIdentifier;
+
+        @ApiModelProperty(value = MODIFIED_DATETIME_DESCRIPTION)
         private LocalDateTime modifiedDateTime;
+
+        @ApiModelProperty(value = MODIFIED_BY_DESCRIPTION)
         private Long modifiedUserId;
+
+        @ApiModelProperty(value = MODIFIED_USER_LOGIN_ID_DESCRIPTION)
         private String modifiedUserIdentifier;
 
         public static BoardListInfo from(BoardVo.BoardList boardInfo) {
@@ -67,17 +94,40 @@ public class BoardDto {
     @Getter
     @Builder
     public static class BoardInfo {
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long id;
+
+        @ApiModelProperty(value = BOARD_TYPE_DESCRIPTION)
         private BoardType boardType;
+
+        @ApiModelProperty(value = CONTENT_TYPE_DESCRIPTION)
         private ContentType contentType;
+
+        @ApiModelProperty(value = TITLE_DESCRIPTION)
         private String title;
+
+        @ApiModelProperty(value = CONTENT_DESCRIPTION)
         private String content;
+
+        @ApiModelProperty(value = USE_YN_DESCRIPTION)
         private UseYn useYn;
+
+        @ApiModelProperty(value = CREATED_DATETIME_DESCRIPTION)
         private LocalDateTime createdDateTime;
+
+        @ApiModelProperty(value = CREATED_BY_DESCRIPTION)
         private Long createdUserId;
+
+        @ApiModelProperty(value = CREATED_USER_LOGIN_ID_DESCRIPTION)
         private String createdUserIdentifier;
+
+        @ApiModelProperty(value = MODIFIED_DATETIME_DESCRIPTION)
         private LocalDateTime modifiedDateTime;
+
+        @ApiModelProperty(value = MODIFIED_BY_DESCRIPTION)
         private Long modifiedUserId;
+
+        @ApiModelProperty(value = MODIFIED_USER_LOGIN_ID_DESCRIPTION)
         private String modifiedUserIdentifier;
 
         public static BoardInfo from(Board board) {
@@ -119,15 +169,19 @@ public class BoardDto {
     @NoArgsConstructor
     public static class AddRequest extends BaseUserDto {
         @NotNull
+        @ApiModelProperty(value = BOARD_TYPE_DESCRIPTION, example = BOARD_TYPE_EXAMPLE)
         private BoardType boardType;
 
         @NotNull
+        @ApiModelProperty(value = CONTENT_TYPE_DESCRIPTION, example = CONTENT_TYPE_EXAMPLE)
         private ContentType contentType;
 
         @NotNull
+        @ApiModelProperty(value = TITLE_DESCRIPTION, example = TITLE_EXAMPLE)
         private String title;
 
         @NotNull
+        @ApiModelProperty(value = CONTENT_DESCRIPTION, example = CONTENT_EXAMPLE)
         private String content;
     }
 
@@ -136,9 +190,11 @@ public class BoardDto {
     @NoArgsConstructor
     public static class AddReplyRequest extends AddRequest {
         @NotNull
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long commonParentId;
 
         @NotNull
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long parentId;
     }
 
@@ -147,16 +203,22 @@ public class BoardDto {
     @NoArgsConstructor
     public static class EditRequest extends BaseUserDto {
         @NotNull
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long id;
 
+        @ApiModelProperty(value = BOARD_TYPE_DESCRIPTION, example = BOARD_TYPE_EXAMPLE)
         private BoardType boardType;
 
+        @ApiModelProperty(value = CONTENT_TYPE_DESCRIPTION, example = CONTENT_TYPE_EXAMPLE)
         private ContentType contentType;
 
+        @ApiModelProperty(value = TITLE_DESCRIPTION, example = TITLE_EXAMPLE)
         private String title;
 
+        @ApiModelProperty(value = CONTENT_DESCRIPTION, example = CONTENT_EXAMPLE)
         private String content;
 
+        @ApiModelProperty(value = USE_YN_DESCRIPTION, example = USE_YN_EXAMPLE)
         private UseYn useYn;
     }
 
@@ -165,6 +227,7 @@ public class BoardDto {
     @NoArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long id;
     }
 

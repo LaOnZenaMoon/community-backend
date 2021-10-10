@@ -10,6 +10,9 @@ dependencies {
     implementation 'com.querydsl:querydsl-apt'
 
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
+
+    // Swagger
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
 }
 
 

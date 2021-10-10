@@ -1,5 +1,6 @@
 package me.lozm.domain.board.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,20 +16,43 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+import static me.lozm.global.swagger.BoardCode.BOARD_ID_DESCRIPTION;
+import static me.lozm.global.swagger.CommentCode.*;
+import static me.lozm.global.swagger.CommonCode.*;
+
 public class CommentDto {
 
     @Getter
     @Builder
     public static class CommentListInfo {
+        @ApiModelProperty(value = COMMENT_ID_DESCRIPTION)
         private Long id;
+
+        @ApiModelProperty(value = COMMENT_TYPE_DESCRIPTION)
         private CommentType commentType;
+
+        @ApiModelProperty(value = CONTENT_DESCRIPTION)
         private String content;
+
+        @ApiModelProperty(value = USE_YN_DESCRIPTION)
         private UseYn useYn;
+
+        @ApiModelProperty(value = CREATED_DATETIME_DESCRIPTION)
         private LocalDateTime createdDateTime;
+
+        @ApiModelProperty(value = CREATED_BY_DESCRIPTION)
         private Long createdUserId;
+
+        @ApiModelProperty(value = CREATED_USER_LOGIN_ID_DESCRIPTION)
         private String createdUserIdentifier;
+
+        @ApiModelProperty(value = MODIFIED_DATETIME_DESCRIPTION)
         private LocalDateTime modifiedDateTime;
+
+        @ApiModelProperty(value = MODIFIED_BY_DESCRIPTION)
         private Long modifiedUserId;
+
+        @ApiModelProperty(value = MODIFIED_USER_LOGIN_ID_DESCRIPTION)
         private String modifiedUserIdentifier;
 
         public static CommentListInfo from(CommentVo.CommentList comment) {
@@ -61,9 +85,16 @@ public class CommentDto {
     @Getter
     @Builder
     public static class CommentInfo {
+        @ApiModelProperty(value = COMMENT_ID_DESCRIPTION)
         private Long id;
+
+        @ApiModelProperty(value = COMMENT_TYPE_DESCRIPTION)
         private CommentType commentType;
+
+        @ApiModelProperty(value = CONTENT_DESCRIPTION)
         private String content;
+
+        @ApiModelProperty(value = USE_YN_DESCRIPTION)
         private UseYn useYn;
 
         public static CommentInfo from(Comment comment) {
@@ -81,12 +112,15 @@ public class CommentDto {
     @NoArgsConstructor
     public static class AddRequest extends BaseUserDto {
         @NotNull
+        @ApiModelProperty(value = BOARD_ID_DESCRIPTION)
         private Long boardId;
 
         @NotNull
+        @ApiModelProperty(value = COMMENT_TYPE_DESCRIPTION)
         private CommentType commentType;
 
         @NotEmpty
+        @ApiModelProperty(value = CONTENT_DESCRIPTION)
         private String content;
     }
 
@@ -95,9 +129,11 @@ public class CommentDto {
     @NoArgsConstructor
     public static class AddReplyRequest extends AddRequest {
         @NotNull
+        @ApiModelProperty(value = COMMENT_ID_DESCRIPTION)
         private Long commonParentId;
 
         @NotNull
+        @ApiModelProperty(value = COMMENT_ID_DESCRIPTION)
         private Long parentId;
     }
 
@@ -106,12 +142,16 @@ public class CommentDto {
     @NoArgsConstructor
     public static class EditRequest extends BaseUserDto {
         @NotNull
+        @ApiModelProperty(value = COMMENT_ID_DESCRIPTION)
         private Long id;
 
+        @ApiModelProperty(value = COMMENT_TYPE_DESCRIPTION)
         private CommentType commentType;
 
+        @ApiModelProperty(value = CONTENT_DESCRIPTION)
         private String content;
 
+        @ApiModelProperty(value = USE_YN_DESCRIPTION)
         private UseYn useYn;
     }
 
@@ -120,6 +160,7 @@ public class CommentDto {
     @NoArgsConstructor
     public static class RemoveRequest extends BaseUserDto {
         @NotNull
+        @ApiModelProperty(value = COMMENT_ID_DESCRIPTION)
         private Long id;
     }
 
