@@ -13,8 +13,8 @@ Content-Type: application/json
 > {%
 client.test("Request executed successfully", function() {
   client.assert(response.status == 200, "Response status is not 200");
-  client.global.set("boardId", response.body.id);
 });
+client.global.set("boardId", response.body.id);
 %}
 
 ### 게시판 수정

@@ -4,8 +4,8 @@ GET {{host}}/comment/board/1
 > {%
 client.test("Request executed successfully", function() {
   client.assert(response.status == 200, "Response status is not 200");
-  client.global.set("boardId", response.body.commentList.content[0].id);
 });
+client.global.set("boardId", response.body.commentList.content[0].id);
 %}
 
 ### 게시판 댓글 추가
@@ -21,8 +21,8 @@ Content-Type: application/json
 > {%
 client.test("Request executed successfully", function() {
   client.assert(response.status == 200, "Response status is not 200");
-  client.global.set("commentId", response.body.id);
 });
+client.global.set("commentId", response.body.id);
 %}
 
 ### 게시판 댓글 수정
